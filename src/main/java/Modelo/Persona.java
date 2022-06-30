@@ -10,10 +10,17 @@ package Modelo;
  */
 public class Persona {
     
+    
+    private String id;
     private String name;
     
-    public Persona(String n){
+    public Persona(String pid,String n){
+        this.id = pid;
         this.name = n;
+    }
+    
+    public String getId(){
+        return id;
     }
 
     public String getName() {

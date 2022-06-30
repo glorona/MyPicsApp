@@ -1,33 +1,53 @@
 package Modelo;
 
 import Util.*;
+
 import java.util.Calendar;
 
 public class Foto
 {
     //Aparecen en la table view
+    private String photoid;
     private String name;
     private String place; //Lugar donde se tomo la foto
     private String keyWord = new String();
-    private ArrayList<Album> album;
+    private ArrayList<String> albumes;
     private Calendar fecha;
-    private ArrayList<Persona> people = new ArrayList(); //Lista de personas en la foto
+    private ArrayList<String> peopleid = new ArrayList(); //Lista de personas en la foto
 
-    
+    private String ruta;
     private String description;
 
     private String comment;
 
     //constructor minimo
-    public Foto(String n, String p, ArrayList<Album> al, ArrayList<Persona> ps, String desc, Calendar f){
+    public Foto(String id,String n, String p, String rut, ArrayList<String> al, ArrayList<String> ps, String desc, Calendar f){
+        this.photoid = id;
         this.name = n;
         this.place = p;
+        this.ruta = rut;
         this.description = desc;
         this.fecha = f;
-        this.people = ps;
-        this.album = al;
+        this.peopleid = ps;
+        this.albumes = al;
     }
 
+    public String getPhotoid() {
+        return photoid;
+    }
+
+    public void setPhotoid(String photoid) {
+        this.photoid = photoid;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+    
     public String getName() {
         return name;
     }
@@ -52,12 +72,12 @@ public class Foto
         this.keyWord = keyWord;
     }
 
-    public ArrayList<Album> getAlbum() {
-        return album;
+    public ArrayList<String> getAlbum() {
+        return albumes;
     }
 
-    public void setAlbum(ArrayList<Album> album) {
-        this.album = album;
+    public void setAlbum(ArrayList<String> album) {
+        this.albumes = album;
     }
 
     public Calendar getFecha() {
@@ -68,12 +88,12 @@ public class Foto
         this.fecha = fecha;
     }
 
-    public ArrayList<Persona> getPeople() {
-        return people;
+    public ArrayList<String> getPeople() {
+        return peopleid;
     }
 
-    public void setPeople(ArrayList<Persona> people) {
-        this.people = people;
+    public void setPeople(ArrayList<String> people) {
+        this.peopleid = people;
     }
 
     public String getDescription() {

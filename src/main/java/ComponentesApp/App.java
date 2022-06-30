@@ -14,6 +14,12 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    
+    public static String rutaAlbum;
+    
+    public static String rutaPersona;
+    
+    public static String rutaFoto;
 
     @Override
     public void start(Stage stage) throws IOException {
