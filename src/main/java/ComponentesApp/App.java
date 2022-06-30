@@ -15,11 +15,15 @@ public class App extends Application {
 
     private static Scene scene;
     
-    public static String rutaAlbum;
+    public static String rutaAlbum = "Archivos/Album/albumes.txt";
     
-    public static String rutaPersona;
+    public static String rutaPersona = "Archivos/Personas/personas.txt";
     
-    public static String rutaFoto;
+    public static String rutaFoto = "Archivos/Fotos/master/fotos.txt";
+    
+    public static String repoFotos = "Archivos/Fotos/archivosfotos/";
+    
+    Sistema sis  = new Sistema();
 
     @Override
     public void start(Stage stage) throws IOException {

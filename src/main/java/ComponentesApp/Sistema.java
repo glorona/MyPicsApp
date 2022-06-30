@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,12 +44,14 @@ public class Sistema {
     
     //Construye Albumes previamente Cargados, pero vacios para ser asociados a las fotos luego
     public ArrayList<Album> construyeAlbumes(String ruta){
+        
         ArrayList<Album> listaA = new ArrayList<Album>();
-         try(InputStream input = Sistema.class.getClassLoader().getResourceAsStream(ruta)){
+         try(InputStream input = new URL("file:"+ ruta).openStream()){
              BufferedReader lector = new BufferedReader(new InputStreamReader(input));
              String linea = null;
              while((linea = lector.readLine())!= null){
-                 String[] datos = linea.split(",");
+                 System.out.println("Linea:" + linea);
+                 String[] datos = linea.split("#");
                  String id = datos[0];
                  String nombre = datos[1];
                  String descripcion = datos[2];
@@ -66,7 +69,7 @@ public class Sistema {
     //Construye Personas previamente Cargados
     public ArrayList<Persona> construyePersonas(String ruta){
         ArrayList<Persona> listaP = new ArrayList<Persona>();
-        try(InputStream input = Sistema.class.getClassLoader().getResourceAsStream(ruta)){
+        try(InputStream input = new URL("file:" + ruta).openStream()){
              BufferedReader lector = new BufferedReader(new InputStreamReader(input));
              String linea = null;
              while((linea = lector.readLine())!= null){
@@ -89,7 +92,7 @@ public class Sistema {
     //Construye Fotos previamente cargadas
     public ArrayList<Foto> construyeFotos(String ruta){
         ArrayList<Foto> listafotos = new ArrayList<Foto>();
-         try(InputStream input = Sistema.class.getClassLoader().getResourceAsStream(ruta)){
+         try(InputStream input = new URL("file:" + ruta).openStream()){
              BufferedReader lector = new BufferedReader(new InputStreamReader(input));
              String linea = null;
              while((linea = lector.readLine())!= null){
