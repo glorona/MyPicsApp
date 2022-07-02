@@ -1,7 +1,7 @@
-module glorona.eddproyectog4 {
+module ComponentesApp {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens glorona.eddproyectog4 to javafx.fxml;
+    opens ComponentesApp to javafx.fxml;
     exports ComponentesApp;
 }

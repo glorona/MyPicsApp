@@ -22,8 +22,6 @@ public class App extends Application {
     public static String rutaFoto = "Archivos/Fotos/master/fotos.txt";
     
     public static String repoFotos = "Archivos/Fotos/archivosfotos/";
-    
-    Sistema sis  = new Sistema();
 
     @Override
     public void start(Stage stage) throws IOException {
