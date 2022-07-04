@@ -10,12 +10,19 @@ import Modelo.Persona;
 import Util.ArrayList;
 import Util.CircularDoubleLinkedList;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +56,7 @@ public class Sistema {
              BufferedReader lector = new BufferedReader(new InputStreamReader(input));
              String linea = null;
              while((linea = lector.readLine())!= null){
-                 System.out.println("Linea:" + linea);
+                 //System.out.println("Linea:" + linea);
                  String[] datos = linea.split("#");
                  String id = datos[0];
                  String nombre = datos[1];
@@ -135,21 +142,171 @@ public class Sistema {
          
      }
     
+    public boolean eliminaFoto(Foto f, String ruta, String directorio){
+        //buscar la foto por su id en el archivo
+        //sacar la foto de lista del sistema
+        //borrar la linea de la foto en el archivo
+        
+        try(InputStream input = new URL("file:" + ruta).openStream()){
+             File archespecifico = new File(new URL("file:" + ruta).toString());
+             File archtemporal = new File(directorio + "archivotemp.txt");
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archtemporal));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 if(id.equals(f.getPhotoid())){
+                     System.out.println("Encontre id");
+                     continue;
+                 }
+                 bw.write(linea + System.getProperty("line.separator"));
+                 
+                 
+                
+             
+             }
+             bw.close();
+             lector.close();
+             Path raiz = Paths.get(ruta);
+             Path destino = Paths.get(directorio + "archivotemp.txt");
+             Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
+             
+             for(int i=0; i<listaFotosSistema.size(); i++){
+                if(listaFotosSistema.get(i).getPhotoid().equals(f.getPhotoid())){
+                    listaFotosSistema.remove(i);
+                }
+                i++;
+             }
+             return true;
+             
+         }
+         catch(IOException ex){
+             java.lang.System.out.println(ex.getMessage());
+             
+         }
+         return false;
+        
+        
+    }
+    public boolean eliminaPersona(Persona p, String ruta, String directorio){
+        //buscar la persona por su id en el archivo
+        //sacar la persona de lista del sistema
+        //borrar la linea de la persona en el archivo
+        
+        try(InputStream input = new URL("file:" + ruta).openStream()){
+             File archespecifico = new File(new URL("file:" + ruta).toString());
+             File archtemporal = new File(directorio + "archivotemp.txt");
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archtemporal));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 if(id.equals(p.getId())){
+                     System.out.println("Encontre id");
+                     continue;
+                 }
+                 bw.write(linea + System.getProperty("line.separator"));
+                 
+                 
+                
+             
+             }
+             bw.close();
+             lector.close();
+             Path raiz = Paths.get(ruta);
+             Path destino = Paths.get(directorio + "archivotemp.txt");
+             Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
+             
+             for(int i=0; i<listaPersonas.size(); i++){
+                if(listaPersonas.get(i).getId().equals(p.getId())){
+                    listaPersonas.remove(i);
+                }
+                i++;
+             }
+             return true;
+             
+         }
+         catch(IOException ex){
+             java.lang.System.out.println(ex.getMessage());
+             
+         }
+         return false;
+        
+        
+    }
+    
+    public boolean eliminaAlbum(Album a, String ruta, String directorio){
+        //buscar album por su id en el archivo
+        //sacar album de lista del sistema
+        //borrar la linea del album en el archivo
+        
+        try(InputStream input = new URL("file:" + ruta).openStream()){
+             File archespecifico = new File(new URL("file:" + ruta).toString());
+             File archtemporal = new File(directorio + "archivotemp.txt");
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archtemporal));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 if(id.equals(a.getId())){
+                     System.out.println("Encontre id");
+                     continue;
+                 }
+                 bw.write(linea + System.getProperty("line.separator"));
+                 
+                 
+                
+             
+             }
+             bw.close();
+             lector.close();
+             Path raiz = Paths.get(ruta);
+             Path destino = Paths.get(directorio + "archivotemp.txt");
+             Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
+             
+             for(int i=0; i<listaAlbumes.size(); i++){
+                if(listaAlbumes.get(i).getId().equals(a.getId())){
+                    listaAlbumes.remove(i);
+                }
+                i++;
+             }
+             return true;
+             
+         }
+         catch(IOException ex){
+             java.lang.System.out.println(ex.getMessage());
+             
+         }
+         return false;
+        
+        
+    }
+    
     //coloca las fotos existentes en los distintos albumes
     public void colocaFotosAlbum(ArrayList<Album> listaAlbum, ArrayList<Foto> listaFotos){
         for(Foto f:listaFotos){
+            //System.out.println(f);
             //recorrer la lista de albumid de cada foto
             for(int i=0; i<f.getAlbum().size();i++){
                 //verificar el id y obtener album de lista de albumes
                 String albumid_act = f.getAlbum().get(i);
+                //System.out.println(albumid_act);
                 for(Album a: listaAlbum){ 
+                    //System.out.println(a.getId());
                     if(albumid_act.equals(a.getId())){
+                        //System.out.println("igual");
                         if(a.getFotos()!= null){
+                            //System.out.println("agregar foto");
                             a.getFotos().addLast(f);
                         }
                         else{
+                            //System.out.println("crear album");
                             a.setFotos(new CircularDoubleLinkedList<Foto>());
                             a.getFotos().addLast(f);
+                            //System.out.println(a.getFotos());
                         }
                     }
                 }
@@ -298,3 +455,4 @@ public class Sistema {
     }
 
 }
+

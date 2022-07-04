@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import Modelo.*;
 
 /**
  * JavaFX App
@@ -17,14 +18,21 @@ public class App extends Application {
     
     public static String rutaAlbum = "Archivos/Album/albumes.txt";
     
+    public static String rutaAlbumfolder = "Archivos/Album/";
+    
     public static String rutaPersona = "Archivos/Personas/personas.txt";
+    
+    public static String rutaPersonasfolder = "Archivos/Personas/";
     
     public static String rutaFoto = "Archivos/Fotos/master/fotos.txt";
     
+    public static String rutaFotofolder = "Archivos/Fotos/master/";
+    
     public static String repoFotos = "Archivos/Fotos/archivosfotos/";
     
-    public static Sistema sys  = new Sistema();
+    public static Sistema sys = new Sistema();
     
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -44,6 +52,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+        
     }
 
 }
