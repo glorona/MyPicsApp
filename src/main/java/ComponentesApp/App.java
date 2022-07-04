@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    static Scene scene;
     
     public static String rutaAlbum = "Archivos/Album/albumes.txt";
     
@@ -22,10 +22,13 @@ public class App extends Application {
     public static String rutaFoto = "Archivos/Fotos/master/fotos.txt";
     
     public static String repoFotos = "Archivos/Fotos/archivosfotos/";
+    
+    public static Sistema sys  = new Sistema();
+    
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("menu"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }

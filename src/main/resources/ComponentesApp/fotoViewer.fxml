@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ComponentesApp.FotoViewerController">
+   <children>
+      <AnchorPane fx:id="photoPane" layoutX="65.0" layoutY="120.0" prefHeight="160.0" prefWidth="160.0" />
+      <Button fx:id="buttonRetroceder" layoutX="41.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="47.0" text="←" />
+      <Button layoutX="497.0" layoutY="29.0" mnemonicParsing="false" onAction="#eliminarFotoAlbum" text="Eliminar" />
+      <Label layoutX="332.0" layoutY="142.0" text="Nombre:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="172.0" text="Descripción:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="202.0" text="Personas:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameLabel" layoutX="395.0" layoutY="142.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="descLabel" layoutX="417.0" layoutY="172.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="persLabel" layoutX="398.0" layoutY="202.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="232.0" text="Fecha:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="262.0" text="Lugar:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="fechaLabel" layoutX="376.0" layoutY="232.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lugarLabel" layoutX="376.0" layoutY="262.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

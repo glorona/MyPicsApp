@@ -1,3 +1,3 @@
-"albumcom"#"Album de fotos comun"#"Album donde se encuentran todas las fotos insertadas."
-"album1"#"Album de fotos 1"#"Album de fotos #1"
-"album2"#"Album de fotos de Gabriel"#"Album de fotos creado por Gabriel."
+"a0"#"Album de fotos comun"#"Album donde se encuentran todas las fotos insertadas."
+"a1"#"Album de fotos 1"#"Album de fotos 1."
+"a2"#"Album de fotos de Gabriel"#"Album de fotos creado por Gabriel."

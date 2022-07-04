@@ -4,13 +4,16 @@
  */
 package Util;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 /**
  *
  * @author ronald cabrera palacios
  * @param <E>
  */
 
-public class CircularDoubleLinkedList<E> implements List<E> {
+public class CircularDoubleLinkedList<E> implements List<E>, Iterable<E> {
     private Node<E> ultimo;
     private int current;
 
@@ -19,18 +22,129 @@ public class CircularDoubleLinkedList<E> implements List<E> {
         current = 0;
     }
     
-    private class Node<E>{
+    private class Node<E> {
         private E data;
         private Node<E> next;
         private Node<E> previous;
-        
-        public Node(E data) {
+
+        public Node(E data){
             this.data = data;
             this.next = null;
             this.previous = null;
         }
     }
+      
+    @Override
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>(){
+        Node<E> p = ultimo.next;
+        @Override
+        public boolean hasNext() {
+            return p!=null;
+        }
+
+        @Override
+        public E next() {
+            E temp = p.data;
+            p = p.next;
+            return temp;
+        }     
+        };
+        return it;
+    }
+    
+    public ListIterator<E> listIterator(){
+        return listIterator(0);
+    }
+    
+    public ListIterator<E> listIterator(int index)
+    {
+        if(index<0 || index>=current) throw new IndexOutOfBoundsException("Indice fuera del limite");
        
+        ListIterator<E> lit = new ListIterator<E>(){
+            private int i = index;
+            private Node<E> p = obtenerNodo(i);
+                       
+            @Override
+            public boolean hasNext() {
+                return p!=null;
+            }
+
+            @Override
+            public E next() {
+                E tmp = p.data;
+                p = p.next;
+                if(i==current -1) i=0;
+                else i++;
+                return tmp;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return p!=null;
+            }
+
+            @Override
+            public E previous() {
+                E tmp = p.data;
+                p = p.previous;
+                if(i==0) i=current -1;
+                else i--;
+                return tmp;
+            }
+
+            @Override
+            public int nextIndex() {
+                if(!isEmpty()){
+                    if(i==current -1) return i=0;
+                    else return i+1;   
+                }
+                return -1;
+            }
+
+            @Override
+            public int previousIndex() {
+                if(hasPrevious()) {
+                    if(i==0) return i=current -1;
+                    else return i-1;
+                }
+                return -1;
+            }
+
+            @Override
+            public void remove() {
+                if(i==0)  removeFirst();
+                else if(i == current-1)  removeLast();
+                else{
+                    Node<E> p = obtenerNodo(i-1);
+                    Node<E> nRemover = p.next;
+                    Node<E> siguiente = nRemover.next;
+                    nRemover.data = null; //Help GC
+                    nRemover.next = nRemover.previous = null; //Help GC
+                    p.next = siguiente;
+                    siguiente.previous = p;
+                    current --;
+                }
+            }
+
+            @Override
+            public void set(E arg0) {
+                if(arg0==null) throw new NullPointerException();
+                else{
+                    Node<E> p = obtenerNodo(i);
+                    p.data=arg0;
+                }
+            }
+
+            @Override
+            public void add(E arg0) {
+                insert(i,arg0);
+            }
+            
+        };
+        return lit;
+    }
+    
     @Override
     public boolean addFirst(E e) {
         if(e == null) 
@@ -293,5 +407,22 @@ public class CircularDoubleLinkedList<E> implements List<E> {
         }
     }
 
-
+    @Override
+    public String toString()
+    {
+        if(isEmpty()) return "[]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<E> p = ultimo.next;
+        for(int i =0; i<current-1; i++)//hasta el penultimo
+        {
+            sb.append(p.data);
+            sb.append(",");
+            p=p.next;
+            
+        }
+        sb.append(ultimo.data);
+        sb.append("]");
+        return sb.toString();
+    }
 }
