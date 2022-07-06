@@ -1,0 +1,5 @@
+"c0"#"Nikon P0-3"#"nikon"
+"c1"#"Canon Ultimate"#"canon"
+"c2"#"Olympus F05"#"olympus"
+"c3"#"Nikon P07"#"nikon"
+"c4"#"Fujifilm PH03"#"fujifilm"
