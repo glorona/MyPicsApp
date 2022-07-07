@@ -322,6 +322,8 @@ public class Sistema {
     public boolean escribeFoto(Foto f, String ruta){
         try{
             StringBuilder stb = new StringBuilder();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            
             stb.append(f.getPhotoid());
             stb.append("#");
             stb.append(f.getName()); //String id,String n, String p, String rut, ArrayList<String> al, ArrayList<String> ps, String desc, Calendar f
@@ -345,14 +347,15 @@ public class Sistema {
             stb.append(f.getDescription());
             stb.append("#");
             //parse calendar
-            stb.append(f.getFecha().toString());
+            stb.append(dateFormat.format(f.getFecha().getTime()));
             stb.append("\n");
-            FileOutputStream escritor = new FileOutputStream(ruta);
+            
+            FileOutputStream escritor = new FileOutputStream(ruta, true);
           
             OutputStreamWriter output  = new OutputStreamWriter(escritor);
             
             output.write(stb.toString());
-            
+            output.flush();
             output.close();
             
             return true;

@@ -1,4 +1,6 @@
-"f1"#"Foto Cel"#"Mi casa"#"Archivos/Fotos/archivosfotos/fotolike.png"#"a0","a1","a2"#"p1","p2"#"descripcion"#21.06.2022
-"f2"#"Foto Stat"#"Internet"#"Archivos/Fotos/archivosfotos/fotostat.jpeg"#"a0","a1"#"p2"#"descripcion"#21.07.2022
-"f3"#"Foto Gato"#"Internet"#"Archivos/Fotos/archivosfotos/fotogato.jpg"#"a1"#"p1"#"descripcion"#21.07.2022
-"f4"#"Foto Pato"#"Internet"#"Archivos/Fotos/archivosfotos/fotopato.png"#"a1"#"p1"#"descripcion"#21.07.2022
+"f1"#"Foto Cel"#"Mi casa"#"Archivos\Fotos\archivosfotos\fotolike.png"#"a0","a1","a2"#"p1","p2"#"descripcion"#21.06.2022
+"f2"#"Foto Stat"#"Internet"#"Archivos\Fotos\archivosfotos\fotostat.jpeg"#"a0","a1"#"p2"#"descripcion"#21.07.2022
+"f3"#"Foto Gato"#"Internet"#"Archivos\Fotos\archivosfotos\fotogato.jpg"#"a0"#"p1"#"descripcion"#21.07.2022
+"f4"#"Foto Pato"#"Internet"#"Archivos\Fotos\archivosfotos\fotopato.png"#"a0"#"p1"#"descripcion"#21.07.2022
+"f5"#"sadasd"#"sadsad"#"Archivos\Fotos\archivosfotos\sadasd.jpeg"#a0#"p1"#"sadasd"#21.05.2021
+"f6"#"dsfdsfsd"#"dsfdsfds"#"Archivos\Fotos\archivosfotos\dsfdsfsd.jpeg"#a0,a1#"p2"#"dsfdsf"#01.02.2022

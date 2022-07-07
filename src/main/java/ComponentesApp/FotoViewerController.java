@@ -79,10 +79,10 @@ public class FotoViewerController implements Initializable {
         
         buttonRetroceder.setOnAction(e -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("albumViewer.fxml"));
                 Parent root = fxmlLoader.load();
                 
-                MenuAlbumController mac = fxmlLoader.<MenuAlbumController>getController();
+                AlbumViewerController mac = fxmlLoader.<AlbumViewerController>getController();
                 mac.initDataCreado(a, index);
                 
                 App.scene.setRoot(root);
@@ -90,6 +90,38 @@ public class FotoViewerController implements Initializable {
             } catch (IOException ex) {
             }
         });
+    }
+    
+    public void initDataFoto(Foto photo) throws FileNotFoundException{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        photoPane.getChildren().clear();
+        
+        nameLabel.setText(photo.getName().replace("\"", ""));
+        descLabel.setText(photo.getDescription().replace("\"", ""));
+        persLabel.setText(construirTextoPersonas(photo));
+        fechaLabel.setText(dateFormat.format(photo.getFecha().getTime()));
+        lugarLabel.setText(photo.getPlace().replace("\"",""));
+        
+        String rutaFoto = photo.getRuta().replace("\"", "");
+        Image image = new Image(new FileInputStream(rutaFoto));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(150); 
+        imageView.setFitWidth(150);
+        imageView.setPreserveRatio(true);
+       
+        photoPane.getChildren().add(imageView);        
+        
+        buttonRetroceder.setOnAction(e -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
+                Parent root = fxmlLoader.load();
+                App.scene.setRoot(root);
+            } catch (FileNotFoundException ex) {
+            } catch (IOException ex) {
+            }
+        });
+        
     }
     
     @FXML
