@@ -5,6 +5,8 @@
 package ComponentesApp;
 
 import Modelo.Album;
+import Modelo.Camara;
+import Modelo.CamaraTipo;
 import Modelo.Foto;
 import Modelo.Persona;
 import Util.ArrayList;
@@ -27,6 +29,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -37,15 +40,354 @@ public class Sistema {
     private ArrayList<Album> listaAlbumes;
     private ArrayList<Persona> listaPersonas;
     private ArrayList<Foto> listaFotosSistema;
+    private ArrayList<Camara> listaCamaras;
     
     public Sistema(){
         this.listaAlbumes = construyeAlbumes(App.rutaAlbum);
         this.listaPersonas = construyePersonas(App.rutaPersona);
         this.listaFotosSistema = construyeFotos(App.rutaFoto);
-        
+        this.listaCamaras = construyeCamaras(App.rutaCamara);
         colocaFotosAlbum(listaAlbumes,listaFotosSistema);
         
+        escribeCamara(new Camara(getLastCamID(listaCamaras),"Nikon P06",CamaraTipo.nikon),App.rutaCamara);
+        
     }
+    
+    
+    //metodos de modificacion
+    public void modificaAlbum(Album a, ArrayList<String> cambios, ArrayList<String> valores){
+        //recorrer la lista de cambios a realizar
+        for(String c: cambios){
+            //SOLO SE PUEDEN REALIZAR CAMBIOS DE NOMBRE Y DE DESCRIPCION
+            if(c.equals("name")){
+                a.setName(valores.get(0));
+                valores.remove(0); //como estan puestos en el orden de cambios es decir 
+                //Arraylist de cambios: name, desc
+                //arraylist de valores: albumnuevo, album a cambiar
+                //removemos el primero para recorrer el proximo y definirlo. es decir, es una remocion lineal.
+            }
+            if(c.equals("desc")){
+                a.setDescription(valores.get(0));
+                valores.remove(0);
+            }
+        }
+        
+    }
+    
+    
+    public void modificaFoto(Foto f, ArrayList<String> cambios, ArrayList<String> valores){
+        for(String c: cambios){
+            //SOLO SE PUEDEN REALIZAR CAMBIOS DE NOMBRE, LUGAR, ALBUMES EN LOS QUE ESTA, PERSONAS DENTRO DE LA FOTO, DESCRIPCION O FECHA
+            //String id,String n, String p, String rut, ArrayList<String> al, ArrayList<String> ps, String desc, Calendar f
+            if(c.equals("name")){
+                f.setName(valores.get(0));
+                valores.remove(0); //como estan puestos en el orden de cambios es decir 
+                //Arraylist de cambios: name, desc
+                //arraylist de valores: albumnuevo, album a cambiar
+                //removemos el primero para recorrer el proximo y definirlo. es decir, es una remocion lineal.
+            }
+            if(c.equals("place")){
+                f.setDescription(valores.get(0));
+                valores.remove(0);
+            }
+            if(c.equals("album")){
+                String[] valoresagg = valores.get(0).split("#");
+                ArrayList<String> newids = new ArrayList<String>();
+                for(int i = 0; i<valoresagg.length;i++){
+                    newids.addLast(valoresagg[i]);
+                }
+                f.setAlbum(newids); //al modificar habra que enviar los albumes en formato a1#a2#a3#a4
+                valores.remove(0);
+            }
+            if(c.equals("person")){
+                String[] valoresagg = valores.get(0).split("#");
+                ArrayList<String> newper = new ArrayList<String>();
+                for(int i = 0; i<valoresagg.length;i++){
+                    newper.addLast(valoresagg[i]);
+                }
+                f.setPeople(newper); //al modificar habra que enviar las fotos en formato f1#f2#f3#f4
+                valores.remove(0);
+            }
+            if(c.equals("desc")){
+                f.setDescription(valores.get(0));
+                valores.remove(0);
+                
+            }
+            if(c.equals("date")){
+                try{
+                 DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                 Calendar cal = Calendar.getInstance();
+                 cal.setTime(df.parse(valores.get(0)));
+                 f.setFecha(cal);
+                 
+                }
+                catch(ParseException e){
+                    System.out.println(e.getMessage());
+                }
+                valores.remove(0);
+            }
+            
+            
+        }
+        
+    }
+    
+    public void modificaPersona(Persona p, ArrayList<String> cambios, ArrayList<String> valores){
+        //recorrer la lista de cambios a realizar
+        for(String c: cambios){
+            //SOLO SE PUEDEN REALIZAR CAMBIOS DE NOMBRE de la persona
+            if(c.equals("name")){
+                p.setName(valores.get(0));
+                valores.remove(0); //como estan puestos en el orden de cambios es decir 
+                
+            }
+        }
+        
+        
+    }
+    
+    public void modificaCamara(Camara cam, ArrayList<String> cambios, ArrayList<String> valores){
+        
+        for(String c: cambios){
+            //SOLO SE PUEDEN REALIZAR CAMBIOS DE NOMBRE DEL MODELO, TIPO DE CAMARA.
+            if(c.equals("modelo")){
+                cam.setModelo(valores.get(0));
+                valores.remove(0); //como estan puestos en el orden de cambios es decir 
+                
+            }
+            if(c.equals("type")){
+                String marca = valores.get(0); //canon,nikon,sony,olympus,fujifilm;
+                 CamaraTipo camtype = null; //inicializar como null para ser asignada mas adelante
+                 switch(marca){
+                     case "canon":
+                         camtype = CamaraTipo.canon;
+                         break;
+                     case "nikon":
+                         camtype = CamaraTipo.nikon;
+                         break;
+                     case "sony":
+                         camtype = CamaraTipo.sony;
+                         break;
+                     case "olympus":
+                         camtype = CamaraTipo.olympus;
+                         break;
+                     case "fujifilm":
+                         camtype = CamaraTipo.fujifilm;
+                         break;
+                 }
+                 cam.setTipo(camtype);
+                 valores.remove(0);
+                
+            }
+        }
+        
+        
+    }
+    
+    //metodos de busqueda
+    public CircularDoubleLinkedList<Foto> buscaSimpleFoto(String parametro, String valor, ArrayList<Foto> listaFotos){
+        CircularDoubleLinkedList<Foto> listaRetorno = new CircularDoubleLinkedList<Foto>();
+        //se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
+        if(parametro.equals("place")){
+            for(Foto f: listaFotos){
+            if(valor.equals(f.getPlace())){
+                listaRetorno.addLast(f);
+                
+                }
+            }
+            return listaRetorno;
+        }
+        if(parametro.equals("people")){
+            String[] datospeople = valor.split("#"); //formato de envio "p1#p2#p3"
+            int confirmaciones_ne = datospeople.length; //obtener la cantidad de confirmaciones necesarias para confirmar que la foto vale
+            int confirmaciones_act = 0;
+            for(Foto f: listaFotos){
+                 for(int i = 0; i<datospeople.length;i++){
+                     String persona_act = datospeople[i];
+                     for(String idpersona: f.getPeople()){
+                         if(idpersona.equals(persona_act)){
+                             confirmaciones_act++;
+                         }
+                     }
+                 }
+                 if(confirmaciones_ne == confirmaciones_act){
+                     listaRetorno.addLast(f);
+                 }
+                
+            }
+            return listaRetorno;
+        }
+        if(parametro.equals("fecha")){
+            //la fecha tiene que estar en formato "FechaInicio-FechaFin"
+            //Formato fechainicio y fechafin 21.07.2022 DD.MM.YYYY
+            String[] datosfechas = valor.split("-");
+            try{
+                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                 Calendar cal = Calendar.getInstance();
+                 Date iniciofecha = df.parse(datosfechas[0]);
+                 Date finfecha = df.parse(datosfechas[1]);
+                 for(Foto f: listaFotos){
+                     if(f.getFecha().getTime().after(iniciofecha) && f.getFecha().getTime().before(finfecha)){
+                         listaRetorno.addLast(f);
+                     }
+                 }
+                
+            }
+            catch(ParseException ex){
+                System.out.println(ex.getMessage());
+            }
+            
+            return listaRetorno;
+        }
+        
+        //POR HACER: BUSCAR POR CAMARA (MARCA O MODELO)
+        
+        
+        
+        
+        
+        
+        return listaRetorno;
+        
+    }
+    
+    public ArrayList<String> buscaSimpleAlbum(String parametro, String valor, ArrayList<Album> listaAlbumes){
+        //Metodo devuelve una lista de albumes con fotos que contengan el parametro solicitado
+        //Se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
+            ArrayList<String> listaRetorno = new ArrayList<String>();
+            CircularDoubleLinkedList<Foto> result = null;
+            if(parametro.equals("people")){
+                //llamar al metodo de buscar foto ya que va a retornar lista global de fotos que contengan ese parametro solicitado
+                result = buscaSimpleFoto("people",valor,listaFotosSistema);
+                
+            }
+            if(parametro.equals("fecha")){
+                //llamar al metodo de buscar foto ya que va a retornar lista global de fotos que contengan ese parametro solicitado
+                result = buscaSimpleFoto("date",valor,listaFotosSistema);
+                
+            }
+            if(parametro.equals("place")){
+                //llamar al metodo de buscar foto ya que va a retornar lista global de fotos que contengan ese parametro solicitado
+                result = buscaSimpleFoto("place",valor,listaFotosSistema);
+                
+                
+            }
+            //tendriamos que buscar los albumid a los que pertenece cada foto
+            for(Album a: listaAlbumes){
+                    for(Foto f: result){
+                    ArrayList<String> albumid = f.getAlbum();
+                    for(String aid: albumid){
+                        if(aid.equals(a.getId()) && !(listaRetorno.contains(a.getId()))){
+                            listaRetorno.addLast(a.getId());
+                           
+                            }
+                        }   
+                    }
+              
+                    
+                }
+          
+            return listaRetorno;
+            
+            //por hacer camara modelo y marca
+        
+    
+        }
+    
+    public CircularDoubleLinkedList<Foto> buscaComplexFoto(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Foto> listaFotos){
+        CircularDoubleLinkedList<Foto> listaRetorno = new CircularDoubleLinkedList<Foto>();
+        
+        //Obtener primer parametro y hacer busqueda inicial
+        listaRetorno = buscaSimpleFoto(parametro.get(0),valor.get(0),listaFotosSistema);
+        parametro.remove(0);
+        valor.remove(0);
+        int tamparametrosinit = parametro.size(); //numero de veces a seguir haciendo el filtrado
+        if(tamparametrosinit>0){
+        for(int i=0; i<tamparametrosinit-1;i++){ //-1 a cambiar por + 0 en el caso de fallo. Itera la cantidad de veces que
+            //Agregar todas las fotos localizadas en la primera busqueda a un arrayList
+            ArrayList<Foto> nuevaLista = new ArrayList<Foto>();
+            for(Foto f: listaRetorno){
+                nuevaLista.addLast(f);
+                }
+            listaRetorno = buscaSimpleFoto(parametro.get(0),valor.get(0),nuevaLista); //volver a realizar la busqueda pero con la lista ya filtrada
+            parametro.remove(0); //sacar el parametro y valor ya procesado
+            valor.remove(0);
+        }
+        
+        }
+        return listaRetorno;
+        
+        
+        
+    }
+    
+    public ArrayList<String> buscaComplexAlbum(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Album> listaAlbumes){
+        ArrayList<String> listaRetorno = new ArrayList<String>();
+        CircularDoubleLinkedList<Foto> result = null;
+        result = buscaComplexFoto(parametro,valor,listaFotosSistema);
+        
+        for(Album a: listaAlbumes){
+                    for(Foto f: result){
+                    ArrayList<String> albumid = f.getAlbum();
+                    for(String aid: albumid){
+                        if(aid.equals(a.getId()) && !(listaRetorno.contains(a.getId()))){
+                            listaRetorno.addLast(a.getId());
+                           
+                            }
+                        }   
+                    }
+              
+                    
+                }
+          
+            return listaRetorno;
+            
+        
+        
+        
+    }
+
+    //Construye Camaras
+    public ArrayList<Camara> construyeCamaras(String ruta){
+         ArrayList<Camara> listaC = new ArrayList<Camara>();
+         try(InputStream input = new URL("file:"+ ruta).openStream()){
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 //System.out.println("Linea:" + linea);
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 String modelo = datos[1];
+                 String marca = datos[2]; //canon,nikon,sony,olympus,fujifilm;
+                 CamaraTipo camtype = null; //inicializar como null para ser asignada mas adelante
+                 switch(marca){
+                     case "canon":
+                         camtype = CamaraTipo.canon;
+                         break;
+                     case "nikon":
+                         camtype = CamaraTipo.nikon;
+                         break;
+                     case "sony":
+                         camtype = CamaraTipo.sony;
+                         break;
+                     case "olympus":
+                         camtype = CamaraTipo.olympus;
+                         break;
+                     case "fujifilm":
+                         camtype = CamaraTipo.fujifilm;
+                         break;
+                 }
+                 listaC.addLast(new Camara(id,modelo,camtype));
+                 
+             }
+         }
+         catch(IOException ex){
+             System.out.println(ex.getMessage());
+             
+         }
+         return listaC;
+     }
+        
     
     
     //Construye Albumes previamente Cargados, pero vacios para ser asociados a las fotos luego
@@ -157,7 +499,6 @@ public class Sistema {
                  String[] datos = linea.split("#");
                  String id = datos[0];
                  if(id.equals(f.getPhotoid())){
-                     System.out.println("Encontre id");
                      continue;
                  }
                  bw.write(linea + System.getProperty("line.separator"));
@@ -204,7 +545,6 @@ public class Sistema {
                  String[] datos = linea.split("#");
                  String id = datos[0];
                  if(id.equals(p.getId())){
-                     System.out.println("Encontre id");
                      continue;
                  }
                  bw.write(linea + System.getProperty("line.separator"));
@@ -222,6 +562,108 @@ public class Sistema {
              for(int i=0; i<listaPersonas.size(); i++){
                 if(listaPersonas.get(i).getId().equals(p.getId())){
                     listaPersonas.remove(i);
+                }
+                i++;
+             }
+             return true;
+             
+         }
+         catch(IOException ex){
+             java.lang.System.out.println(ex.getMessage());
+             
+         }
+         return false;
+        
+        
+    }
+    
+    
+    //autoasigna id para creacion de objetos
+    public String getLastPhID(ArrayList<Foto> listaFotos){
+        Foto ultimafoto = listaFotos.getLast();
+        String ultid = ultimafoto.getPhotoid();
+        int extracomilla = ultid.length() - 1;
+        String numget = ultid.substring(ultid.indexOf("f")+1,extracomilla);
+        
+        int number = Integer.parseInt(numget);
+        number++;
+        String returning = "f" + String.valueOf(number);
+        return returning;
+        
+    }
+    public String getLastAlID(ArrayList<Album> listaAlbum){
+        Album ultimoalbum = listaAlbum.getLast();
+        String ultid = ultimoalbum.getId();
+        int extracomilla = ultid.length() - 1;
+        String numget = ultid.substring(ultid.indexOf("a")+1,extracomilla);
+        
+        int number = Integer.parseInt(numget);
+        number++;
+        String returning = "a" + String.valueOf(number);
+        return returning;
+        
+    }
+    public String getLastPerID(ArrayList<Persona> listaPersona){
+        Persona ultimapersona = listaPersona.getLast();
+        String ultid = ultimapersona.getId();
+        int extracomilla = ultid.length() - 1;
+        String numget = ultid.substring(ultid.indexOf("p")+1,extracomilla);
+        
+        int number = Integer.parseInt(numget);
+        number++;
+        String returning = "p" + String.valueOf(number);
+        return returning;
+        
+    }
+    public String getLastCamID(ArrayList<Camara> listaCams){
+        Camara ultimacam = listaCams.getLast();
+        String ultid = ultimacam.getId();
+        int extracomilla = ultid.length() - 1;
+        String numget = ultid.substring(ultid.indexOf("c")+1,extracomilla);
+        
+        int number = Integer.parseInt(numget);
+        number++;
+        String returning = "c" + String.valueOf(number);
+        return returning;
+        
+    }
+    
+    
+    
+    
+    public boolean eliminaCamara(Camara c, String ruta, String directorio){
+        //buscar album por su id en el archivo
+        //sacar album de lista del sistema
+        //borrar la linea del album en el archivo
+        
+        try(InputStream input = new URL("file:" + ruta).openStream()){
+             File archespecifico = new File(new URL("file:" + ruta).toString());
+             File archtemporal = new File(directorio + "archivotemp.txt");
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archtemporal));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 if(id.equals(c.getId())){
+                     System.out.println("Encontre id");
+                     continue;
+                 }
+                 bw.write(linea + System.getProperty("line.separator"));
+                 
+                 
+                
+             
+             }
+             bw.close();
+             lector.close();
+             Path raiz = Paths.get(ruta);
+             Path destino = Paths.get(directorio + "archivotemp.txt");
+             Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
+             
+             for(int i=0; i<listaCamaras.size(); i++){
+                if(listaCamaras.get(i).getId().equals(c.getId())){
+                    listaCamaras.remove(i);
                 }
                 i++;
              }
@@ -355,7 +797,9 @@ public class Sistema {
             OutputStreamWriter output  = new OutputStreamWriter(escritor);
             
             output.write(stb.toString());
+            
             output.flush();
+            
             output.close();
             
             return true;
@@ -375,7 +819,44 @@ public class Sistema {
         
         
     }
-    
+    public boolean escribeCamara(Camara c, String ruta){
+        try{
+            StringBuilder stb = new StringBuilder();
+            stb.append(c.getId());
+            stb.append("#");
+            stb.append(c.getModelo()); //(String aid, String name, String description
+            stb.append("#");
+            stb.append(c.getTipo().toString());
+            stb.append("\n");
+            FileOutputStream escritor = new FileOutputStream(ruta, true); //true para append al archivo
+          
+            OutputStreamWriter output  = new OutputStreamWriter(escritor);
+            
+
+            
+            output.write(stb.toString());
+            
+            output.flush();
+            output.close();
+            
+            return true;
+            
+            
+            
+        }
+        catch (IOException e){
+            java.lang.System.out.println(e.getMessage());
+            
+        }
+        catch(Exception e){
+            java.lang.System.out.println(e.getMessage());
+            
+        }
+        return false;
+        
+        
+        
+    }
     //Escribe en archivos si se crea un nuevo album
     public boolean escribeAlbum(Album a, String ruta){
         try{
@@ -386,11 +867,13 @@ public class Sistema {
             stb.append("#");
             stb.append(a.getDescription());
             stb.append("\n");
-            FileOutputStream escritor = new FileOutputStream(ruta);
+            FileOutputStream escritor = new FileOutputStream(ruta,true);
           
             OutputStreamWriter output  = new OutputStreamWriter(escritor);
             
             output.write(stb.toString());
+            
+            output.flush();
             
             output.close();
             
@@ -420,11 +903,13 @@ public class Sistema {
             stb.append("#");
             stb.append(p.getName()); //(String aid, String name, String description
             stb.append("\n");
-            FileOutputStream escritor = new FileOutputStream(ruta);
+            FileOutputStream escritor = new FileOutputStream(ruta,true);
           
             OutputStreamWriter output  = new OutputStreamWriter(escritor);
             
             output.write(stb.toString());
+            
+            output.flush();
             
             output.close();
             
@@ -456,6 +941,12 @@ public class Sistema {
     public ArrayList<Foto> getListaFotosSistema() {
         return listaFotosSistema;
     }
+
+    public ArrayList<Camara> getListaCamaras() {
+        return listaCamaras;
+    }
+    
+    
 
 }
 

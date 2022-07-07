@@ -27,10 +27,18 @@ public class Persona {
         return name;
     }
 
+
     @Override
     public String toString() {
         return name.replace("\"", "");
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
+
      
     
     

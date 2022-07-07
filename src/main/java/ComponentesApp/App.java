@@ -15,6 +15,10 @@ public class App extends Application {
 
     static Scene scene;
     
+    public static String rutaCamara = "Archivos/Camaras/camaras.txt";
+    
+    public static String rutaCamarafolder = "Archivos/Camaras/";
+    
     public static String rutaAlbum = "Archivos/Album/albumes.txt";
     
     public static String rutaAlbumfolder = "Archivos/Album/";
@@ -48,6 +52,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        
         launch();
         
     }
