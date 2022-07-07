@@ -48,9 +48,6 @@ public class Sistema {
         this.listaFotosSistema = construyeFotos(App.rutaFoto);
         this.listaCamaras = construyeCamaras(App.rutaCamara);
         colocaFotosAlbum(listaAlbumes,listaFotosSistema);
-        
-        escribeCamara(new Camara(getLastCamID(listaCamaras),"Nikon P06",CamaraTipo.nikon),App.rutaCamara);
-        
     }
     
     

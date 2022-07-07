@@ -3,3 +3,4 @@
 "c2"#"Olympus F05"#"olympus"
 "c3"#"Nikon P07"#"nikon"
 "c4"#"Fujifilm PH03"#"fujifilm"
+"c5"#"Nikon P06"#"nikon"

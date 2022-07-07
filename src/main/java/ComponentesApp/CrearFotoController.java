@@ -187,7 +187,7 @@ public class CrearFotoController implements Initializable {
                 String fileName = f.getName();
                 String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, f.getName().length());
                 
-                Path pathDestino = Paths.get("Archivos/Fotos/archivosfotos/" + txtNameNewFoto.getText() + "." + fileExtension);
+                Path pathDestino = Paths.get("Archivos/Fotos/archivosfotos/" + App.sys.getLastPhID(App.sys.getListaFotosSistema()) + "." + fileExtension);
                 Path pathOrigen = Paths.get(f.getAbsolutePath());                            
 
                 this.paths.addLast(pathDestino);
@@ -222,7 +222,7 @@ public class CrearFotoController implements Initializable {
             String route = "\"" + pathDestino.toString() + "\"";
 
             ArrayList<String> al = new ArrayList<>();
-            al.addLast("a0");
+            al.addLast("\"a0\"");
 
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
             Calendar cal = Calendar.getInstance();
@@ -234,8 +234,6 @@ public class CrearFotoController implements Initializable {
             Files.copy(pathOrigen, pathDestino);
             App.sys.escribeFoto(f, App.rutaFoto);
             
-            System.out.println(App.sys.getListaFotosSistema().size());
-
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
             Parent root = fxmlLoader.load();                
             App.scene.setRoot(root);

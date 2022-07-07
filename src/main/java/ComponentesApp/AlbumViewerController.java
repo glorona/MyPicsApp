@@ -56,6 +56,7 @@ public class AlbumViewerController implements Initializable {
     public void initDataCreado(Album a, int index) throws FileNotFoundException{
         albumName.setText(a.getName().replace("\"",""));
         albumDescription.setText(a.getDescription().replace("\"", ""));
+        
         ListIterator <Foto> listaFotos = a.getFotos().listIterator(index);
         colocarFoto(a, listaFotos.next());
         
