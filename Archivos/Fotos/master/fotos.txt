@@ -6,3 +6,4 @@
 "f6"#"carro azul"#"internet"#"Archivos\Fotos\archivosfotos\f6.jpg"#"a0"#"p2"#"un carro azul"#07.07.2022
 "f7"#"carro naranja"#"internet"#"Archivos\Fotos\archivosfotos\f7.jpg"#"a0"#"p1","p2"#"un carro naranja"#06.07.2022
 "f8"#"fdfdsfdsf"#"sdfsdfdsf"#"Archivos\Fotos\archivosfotos\f8.jpeg"#"a0"#"p2"#"dsfdsfdsf"#07.07.2022
+"f9"#"aaa"#"mi casa"#"Archivos\Fotos\archivosfotos\f9.JPG"#"a0"#"p1","p2"#"aaa"#21.06.2021"f10"#"Kyro"#"Casa"#"Archivos\Fotos\archivosfotos\f10.JPG"#"a0"#"p1","p2"#"Kyro"#08.02.2021

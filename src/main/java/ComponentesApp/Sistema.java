@@ -51,6 +51,38 @@ public class Sistema {
     }
     
     
+    public void colocaFotoAlbum(Album a, Foto f){
+        //SOLO PARA COLOCAR FOTOS YA EXISTENTES EN ALBUMES.
+        //recorrer la lista de albumes de la foto
+        //verificar si el album id no esta en esta lista de albumes
+        //si no esta, agregar y modificar el archivo de la foto
+        //en album se debe agregar la foto al final de la lista
+        boolean encontrado = false;
+        
+        for(String id: f.getAlbum()){
+            if(id.equals(a.getId())){
+                encontrado = true;
+            }
+        }
+        if(encontrado){
+            return;
+        }
+        else{
+            f.getAlbum().addLast(a.getId());
+            for(String id: f.getAlbum()){
+                System.out.println(id);
+            }
+            ArrayList<String> cambios = new ArrayList<String>();
+            cambios.addLast("album");
+            modificaFoto(f,cambios,f.getAlbum());
+            a.getFotos().addLast(f);
+        }
+        
+        
+        
+    }
+    
+    
     //metodos de modificacion
     public void modificaAlbum(Album a, ArrayList<String> cambios, ArrayList<String> valores){
         //recorrer la lista de cambios a realizar

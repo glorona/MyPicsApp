@@ -48,7 +48,7 @@ public class MenuAlbumController implements Initializable {
         
         
         try {
-            agregarBotones();
+            agregarBotones(App.sys.getListaAlbumes());
             
             double totalFotos = (double) App.sys.getListaFotosSistema().size();
             int numRows = (int) Math.ceil(totalFotos/3);
@@ -59,8 +59,8 @@ public class MenuAlbumController implements Initializable {
         }
     }  
     
-    private void agregarBotones() {
-        for(Album a: App.sys.getListaAlbumes()) {
+    private void agregarBotones(ArrayList<Album> listaAlbumes) {
+        for(Album a: listaAlbumes) {
             Button tempButton = new Button(a.getName().replace("\"", ""));
             tempButton.setOnAction((ActionEvent e) -> {
                 try{
