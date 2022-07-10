@@ -236,7 +236,8 @@ public class CrearFotoController implements Initializable {
             cal.setTime(df.parse(fecha));
 
             Foto f = new Foto(id,name,place,route,al,ps,desc,cal);
-            App.sys.getListaFotosSistema().addLast(f); 
+            App.sys.getListaFotosSistema().addLast(f);
+            App.sys.getListaAlbumes().get(0).getFotos().addLast(f);
             
             Files.copy(pathOrigen, pathDestino);
             App.sys.escribeFoto(f, App.rutaFoto);
