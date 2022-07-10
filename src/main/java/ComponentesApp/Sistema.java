@@ -6,7 +6,6 @@ package ComponentesApp;
 
 import Modelo.Album;
 import Modelo.Camara;
-import Modelo.CamaraTipo;
 import Modelo.Foto;
 import Modelo.Persona;
 import Util.ArrayList;
@@ -105,6 +104,7 @@ public class Sistema {
                 f.setPeople(newper); //al modificar habra que enviar las fotos en formato f1#f2#f3#f4
                 valores.remove(0);
             }
+            
             if(c.equals("desc")){
                 f.setDescription(valores.get(0));
                 valores.remove(0);
@@ -154,25 +154,7 @@ public class Sistema {
             }
             if(c.equals("type")){
                 String marca = valores.get(0); //canon,nikon,sony,olympus,fujifilm;
-                 CamaraTipo camtype = null; //inicializar como null para ser asignada mas adelante
-                 switch(marca){
-                     case "canon":
-                         camtype = CamaraTipo.canon;
-                         break;
-                     case "nikon":
-                         camtype = CamaraTipo.nikon;
-                         break;
-                     case "sony":
-                         camtype = CamaraTipo.sony;
-                         break;
-                     case "olympus":
-                         camtype = CamaraTipo.olympus;
-                         break;
-                     case "fujifilm":
-                         camtype = CamaraTipo.fujifilm;
-                         break;
-                 }
-                 cam.setTipo(camtype);
+                 cam.setTipo(marca);
                  valores.remove(0);
                 
             }
@@ -356,25 +338,7 @@ public class Sistema {
                  String id = datos[0];
                  String modelo = datos[1];
                  String marca = datos[2]; //canon,nikon,sony,olympus,fujifilm;
-                 CamaraTipo camtype = null; //inicializar como null para ser asignada mas adelante
-                 switch(marca){
-                     case "canon":
-                         camtype = CamaraTipo.canon;
-                         break;
-                     case "nikon":
-                         camtype = CamaraTipo.nikon;
-                         break;
-                     case "sony":
-                         camtype = CamaraTipo.sony;
-                         break;
-                     case "olympus":
-                         camtype = CamaraTipo.olympus;
-                         break;
-                     case "fujifilm":
-                         camtype = CamaraTipo.fujifilm;
-                         break;
-                 }
-                 listaC.addLast(new Camara(id,modelo,camtype));
+                 listaC.addLast(new Camara(id,modelo,marca));
                  
              }
          }
@@ -486,6 +450,7 @@ public class Sistema {
         //sacar la foto de lista del sistema
         //borrar la linea de la foto en el archivo
         
+        
         try(InputStream input = new URL("file:" + ruta).openStream()){
              File archespecifico = new File(new URL("file:" + ruta).toString());
              File archtemporal = new File(directorio + "archivotemp.txt");
@@ -501,9 +466,8 @@ public class Sistema {
                  bw.write(linea + System.getProperty("line.separator"));
                  
                  
-                
+            }
              
-             }
              bw.close();
              lector.close();
              Path raiz = Paths.get(ruta);
@@ -516,6 +480,8 @@ public class Sistema {
                 }
                 i++;
              }
+             
+             
              return true;
              
          }

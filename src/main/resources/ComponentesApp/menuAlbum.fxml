@@ -26,6 +26,7 @@
                      </font>
                   </Label>
                   <Button layoutX="459.0" layoutY="44.0" mnemonicParsing="false" onAction="#crearAlbum" text="Nuevo Albúm" />
+                  <Button layoutX="482.0" layoutY="304.0" mnemonicParsing="false" onAction="#menuOpciones" text="Opciones" />
                </children>
             </AnchorPane>
          </content>

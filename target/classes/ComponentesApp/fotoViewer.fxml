@@ -9,7 +9,7 @@
    <children>
       <AnchorPane fx:id="photoPane" layoutX="65.0" layoutY="120.0" prefHeight="160.0" prefWidth="160.0" />
       <Button fx:id="buttonRetroceder" layoutX="41.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="47.0" text="←" />
-      <Button layoutX="497.0" layoutY="29.0" mnemonicParsing="false" onAction="#eliminarFotoAlbum" text="Eliminar" />
+      <Button fx:id="buttonEliminarFoto" layoutX="497.0" layoutY="29.0" mnemonicParsing="false" text="Eliminar" />
       <Label layoutX="332.0" layoutY="142.0" text="Nombre:">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -60,5 +60,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Button layoutX="425.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonEditar" prefHeight="25.0" prefWidth="59.0" text="Editar" />
    </children>
 </AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="ComponentesApp.AnadirFotoController">
+   <children>
+      <Button layoutX="51.0" layoutY="36.0" mnemonicParsing="false" onAction="#buttonRegresar" prefHeight="25.0" prefWidth="64.0" text="←" />
+      <ComboBox fx:id="cbxFotos" layoutX="335.0" layoutY="36.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label layoutX="201.0" layoutY="36.0" text="Seleccionar foto:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <HBox fx:id="hboxFoto" layoutX="83.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="341.0" layoutY="121.0" text="Nombre:" />
+      <Label layoutX="341.0" layoutY="151.0" text="Descripción:" />
+      <Label layoutX="341.0" layoutY="181.0" text="Fecha:" />
+      <Label layoutX="341.0" layoutY="211.0" text="Lugar:" />
+      <Label layoutX="341.0" layoutY="241.0" text="Personas:" />
+      <Label fx:id="fotoName" layoutX="392.0" layoutY="121.0" prefHeight="17.0" prefWidth="145.0" />
+      <Label fx:id="fotoDesc" layoutX="414.0" layoutY="151.0" prefHeight="17.0" prefWidth="133.0" />
+      <Label fx:id="fotoDate" layoutX="377.0" layoutY="181.0" prefHeight="17.0" prefWidth="175.0" />
+      <Label fx:id="fotoPlace" layoutX="378.0" layoutY="211.0" prefHeight="17.0" prefWidth="185.0" />
+      <Label fx:id="fotoPeople" layoutX="396.0" layoutY="241.0" prefHeight="17.0" prefWidth="175.0" />
+      <Button layoutX="264.0" layoutY="323.0" mnemonicParsing="false" onAction="#buttonAnadir" prefHeight="25.0" prefWidth="73.0" text="AÑADIR" />
+   </children>
+</AnchorPane>

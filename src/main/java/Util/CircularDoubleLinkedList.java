@@ -289,6 +289,7 @@ public class CircularDoubleLinkedList<E> implements List<E>, Iterable<E> {
         if(index == current-1){
             return ultimo;
         }
+        
         Node<E> temporal = ultimo.next;
         for(int i=0; i<index;i++){
             temporal = temporal.next;
@@ -368,15 +369,21 @@ public class CircularDoubleLinkedList<E> implements List<E>, Iterable<E> {
 
     @Override
     public boolean contains(E e) {
-        if(e == null){
+        if(isEmpty()){
             return false;
         }
-        for(int i=0; i<current-1;i++){
-            Node<E> n = obtenerNodo(i);
-            if(n.data.equals(e)){
+        
+        Node p = ultimo.next;
+        
+        if(e.equals(p.data))
+            return true;
+        
+        while(p != ultimo){
+            p = p.next;
+            if(e.equals(p.data))
                 return true;
-            }
         }
+        
         return false;
     }
 

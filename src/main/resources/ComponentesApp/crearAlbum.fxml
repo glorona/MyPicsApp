@@ -15,8 +15,9 @@
       </Label>
       <Label layoutX="80.0" layoutY="140.0" text="Nombre:" />
       <Label layoutX="80.0" layoutY="183.0" text="Descripción:" />
-      <Button fx:id="buttonCreateAlbum" layoutX="275.0" layoutY="314.0" mnemonicParsing="false" text="CREAR" />
+      <Button fx:id="buttonCreateAlbum" layoutX="314.0" layoutY="314.0" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" text="CREAR" />
       <TextField fx:id="txtNameNewAlbum" layoutX="165.0" layoutY="136.0" />
       <TextField fx:id="txtDescNewAlbum" layoutX="165.0" layoutY="179.0" />
+      <Button layoutX="213.0" layoutY="314.0" mnemonicParsing="false" onAction="#buttonCancelar" text="CANCELAR" />
    </children>
 </AnchorPane>

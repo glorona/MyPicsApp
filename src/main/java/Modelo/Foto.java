@@ -112,7 +112,10 @@ public class Foto
         this.comment = comment;
     }
     
-
+    @Override
+    public String toString(){
+        return name.replace("\"", "");
+    }
 }
    
     

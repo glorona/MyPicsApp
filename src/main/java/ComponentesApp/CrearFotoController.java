@@ -103,7 +103,14 @@ public class CrearFotoController implements Initializable {
     }
     
     private String fotoId(){
-        int numId = (Integer.parseInt(App.sys.getListaFotosSistema().getLast().getPhotoid().replace("\"", "").substring(1))) + 1;
+        int a = -1;
+        for(Foto f: App.sys.getListaFotosSistema()){
+            int b = Integer.parseInt(f.getPhotoid().replace("\"", "").substring(1));
+            if(b > a){
+                a = b;
+            }
+        }
+        int numId = a+1;
         String id = "f";
         return "\""+id.concat(String.valueOf(numId))+"\"";
     }
@@ -187,7 +194,7 @@ public class CrearFotoController implements Initializable {
                 String fileName = f.getName();
                 String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, f.getName().length());
                 
-                Path pathDestino = Paths.get("Archivos/Fotos/archivosfotos/" + App.sys.getLastPhID(App.sys.getListaFotosSistema()) + "." + fileExtension);
+                Path pathDestino = Paths.get("Archivos/Fotos/archivosfotos/" + fotoId().replace("\"", "") + "." + fileExtension);
                 Path pathOrigen = Paths.get(f.getAbsolutePath());                            
 
                 this.paths.addLast(pathDestino);
@@ -237,40 +244,10 @@ public class CrearFotoController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
             Parent root = fxmlLoader.load();                
             App.scene.setRoot(root);
-
-        
+            
         } catch (IOException | ParseException ex) {
             Logger.getLogger(CrearFotoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
    
 }
-
-
-/*try {
-                String id = fotoId();
-                String name = "\"" + txtNameNewFoto.getText() + "\"";
-                String desc = "\"" + txtDescNewFoto.getText() + "\"";
-                String place = "\"" + txtPlaceNewFoto.getText() + "\"";
-                String fecha = txtDateNewFoto.getText();
-
-                Path pathDestino = this.paths.get(0);
-                String route = "\"" + pathDestino.toString() + "\"";
-
-                ArrayList<String> al = new ArrayList<>();
-                al.addLast("a0");
-
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(df.parse(fecha));
-
-                App.sys.getListaFotosSistema().addLast(new Foto(id,name,place,route,al,ps,desc,cal)); 
-                
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
-                Parent root = fxmlLoader.load();                
-                App.scene.setRoot(root);
-
-            } catch (ParseException ex) {
-            } catch (IOException ex) {
-                Logger.getLogger(CrearFotoController.class.getName()).log(Level.SEVERE, null, ex);
-            }*/

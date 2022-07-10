@@ -7,18 +7,25 @@ package ComponentesApp;
 import Modelo.Album;
 import Modelo.Foto;
 import Modelo.Persona;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +37,7 @@ import javafx.scene.layout.AnchorPane;
  * @author ronal
  */
 public class FotoViewerController implements Initializable {
+    private Foto f;
 
     @FXML
     private AnchorPane photoPane;
@@ -45,6 +53,8 @@ public class FotoViewerController implements Initializable {
     private Label fechaLabel;
     @FXML
     private Label lugarLabel;
+    @FXML
+    private Button buttonEliminarFoto;
 
     /**
      * Initializes the controller class.
@@ -56,7 +66,8 @@ public class FotoViewerController implements Initializable {
         // TODO
     }    
     
-    public void initData(Album a, Foto photo) throws FileNotFoundException{
+    public void initData(Album a, Foto photo) throws FileNotFoundException, IOException{
+        this.f = photo;
         int index = a.getFotos().indexOf(photo);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         
@@ -69,13 +80,18 @@ public class FotoViewerController implements Initializable {
         lugarLabel.setText(photo.getPlace().replace("\"",""));
         
         String rutaFoto = photo.getRuta().replace("\"", "");
-        Image image = new Image(new FileInputStream(rutaFoto));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(150); 
-        imageView.setFitWidth(150);
-        imageView.setPreserveRatio(true);
+        
+        
+        ImageView imageView;
+        try (FileInputStream cerrar = new FileInputStream(rutaFoto)) {
+            Image image = new Image(cerrar);
+            imageView = new ImageView(image);
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            imageView.setPreserveRatio(true);
+        }
        
-        photoPane.getChildren().add(imageView);
+        photoPane.getChildren().add(imageView); 
         
         buttonRetroceder.setOnAction(e -> {
             try {
@@ -92,7 +108,9 @@ public class FotoViewerController implements Initializable {
         });
     }
     
-    public void initDataFoto(Foto photo) throws FileNotFoundException{
+    public void initDataFoto(Foto photo) throws FileNotFoundException, IOException{
+        this.f = photo;
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         
         photoPane.getChildren().clear();
@@ -104,11 +122,16 @@ public class FotoViewerController implements Initializable {
         lugarLabel.setText(photo.getPlace().replace("\"",""));
         
         String rutaFoto = photo.getRuta().replace("\"", "");
-        Image image = new Image(new FileInputStream(rutaFoto));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(150); 
-        imageView.setFitWidth(150);
-        imageView.setPreserveRatio(true);
+        
+        
+        ImageView imageView;
+        try (FileInputStream cerrar = new FileInputStream(rutaFoto)) {
+            Image image = new Image(cerrar);
+            imageView = new ImageView(image);
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            imageView.setPreserveRatio(true);
+        }
        
         photoPane.getChildren().add(imageView);        
         
@@ -122,11 +145,33 @@ public class FotoViewerController implements Initializable {
             }
         });
         
+        buttonEliminarFoto.setOnAction(e -> {
+            try {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("Confirmación");
+                alert.setContentText("¿Estas seguro de confirmar la acción?");
+                Optional<ButtonType> action = alert.showAndWait();
+                
+                if (action.get() == ButtonType.OK) {
+                    
+                    App.sys.eliminaFoto(photo, App.rutaFoto, App.rutaFotofolder);
+                    App.sys.getListaFotosSistema().remove(App.sys.getListaFotosSistema().indexOf(photo));
+                    File imagen = new File(photo.getRuta().replace("\"", ""));
+                    imagen.delete();
+                    
+                    FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));
+                    Parent root = fxmlLoader.load();
+                    App.scene.setRoot(root);            
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(FotoViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        
+        });
+        
     }
     
-    @FXML
-    private void eliminarFotoAlbum(ActionEvent event) {
-    }
     
     private String construirTextoPersonas(Foto photo){
         StringBuilder sb = new StringBuilder();
@@ -141,4 +186,24 @@ public class FotoViewerController implements Initializable {
         }
         return sb.toString().substring(0, sb.toString().length()-2);
     }
+
+    @FXML
+    private void buttonEditar(ActionEvent event) {
+        try {
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("EditarFoto.fxml"));
+                Parent root = fxmlLoader.load();
+                
+                EditarFotoController efc = fxmlLoader.<EditarFotoController>getController();
+                efc.initData(f);
+                            
+                App.scene.setRoot(root);
+            } catch (IOException ex) {
+                Logger.getLogger(FotoViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+            Logger.getLogger(FotoViewerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
+
 }

@@ -8,6 +8,7 @@ import Modelo.Album;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,13 +47,23 @@ public class CrearAlbumController implements Initializable {
                 Album album = new Album("\""+id.concat(String.valueOf(numId))+"\"", "\""+name+"\"", "\""+description+"\"", null);
                 App.sys.getListaAlbumes().addLast(album);
 
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menu.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
                 Parent root = fxmlLoader.load();
                 App.scene.setRoot(root);
             } catch (IOException ex) {
             }
         });
     }    
+
+    @FXML
+    private void buttonCancelar(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
+            Parent root = fxmlLoader.load();
+            App.scene.setRoot(root);
+        } catch (IOException ex) {
+        }
+    }
 
     
 }

@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,9 +46,6 @@ public class MenuAlbumController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
-        
         try {
             agregarBotones();
             
@@ -56,6 +55,8 @@ public class MenuAlbumController implements Initializable {
             anchorPaneFotos.getChildren().add(drawBus(numRows, 4));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuAlbumController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }  
     
@@ -88,7 +89,8 @@ public class MenuAlbumController implements Initializable {
         App.scene.setRoot(root);
     }
     
-    public static GridPane drawBus(int rows, int col) throws FileNotFoundException{
+        
+    public static GridPane drawBus(int rows, int col) throws FileNotFoundException, IOException{
         GridPane table = new GridPane();
         table.setHgap(25);
         table.setVgap(25);
@@ -102,11 +104,14 @@ public class MenuAlbumController implements Initializable {
                 if(x<fotos.size()){
                     Foto photo = fotos.get(x);
                     String rutaFoto = photo.getRuta().replace("\"", "");
-                    Image image = new Image(new FileInputStream(rutaFoto));
-                    ImageView imageView = new ImageView(image);
-                    imageView.setPreserveRatio(true);
-                    imageView.setFitHeight(150); 
-                    imageView.setFitWidth(150);
+                    ImageView imageView;
+                    try (FileInputStream cerrar = new FileInputStream(rutaFoto)) {
+                        Image image = new Image(cerrar);
+                        imageView = new ImageView(image);
+                        imageView.setPreserveRatio(true);
+                        imageView.setFitHeight(150);
+                        imageView.setFitWidth(150);
+                    }
                     
                     imageView.setOnMouseClicked(e -> {
                         try {
@@ -149,6 +154,16 @@ public class MenuAlbumController implements Initializable {
             }
         }
         return table;
+    }
+
+    @FXML
+    private void menuOpciones(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuOpciones.fxml"));
+            Parent root = fxmlLoader.load();
+            App.scene.setRoot(root);
+        } catch (IOException ex) {
+        }
     }
     
 }

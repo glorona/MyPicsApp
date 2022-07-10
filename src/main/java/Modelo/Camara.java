@@ -11,10 +11,10 @@ package Modelo;
 public class Camara {
     private String id;
     private String modelo;
-    private CamaraTipo tipo;
+    private String tipo;
     
     
-    public Camara(String id, String model, CamaraTipo ty){ 
+    public Camara(String id, String model, String ty){ 
         this.id = id;
         this.modelo = model;
         this.tipo = ty;
@@ -36,12 +36,17 @@ public class Camara {
         this.modelo = modelo;
     }
 
-    public CamaraTipo getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(CamaraTipo tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    @Override
+    public String toString() {
+        return tipo.replace("\"", "") + " " + modelo.replace("\"", "");
     }
     
     

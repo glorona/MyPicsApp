@@ -6,18 +6,24 @@ package ComponentesApp;
 
 import Modelo.Album;
 import Modelo.Foto;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ListIterator;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +35,7 @@ import javafx.scene.layout.HBox;
  * @author ronal
  */
 public class AlbumViewerController implements Initializable {
+    private Album album;
     
     @FXML
     private Label albumName;
@@ -54,6 +61,8 @@ public class AlbumViewerController implements Initializable {
     }
     
     public void initDataCreado(Album a, int index) throws FileNotFoundException{
+        this.album = a;
+        
         albumName.setText(a.getName().replace("\"",""));
         albumDescription.setText(a.getDescription().replace("\"", ""));
         
@@ -80,11 +89,11 @@ public class AlbumViewerController implements Initializable {
         
         buttonAnadirFoto.setOnAction(e ->{ 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("crearFoto.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("anadirFoto.fxml"));
                 Parent root = fxmlLoader.load();
 
-                CrearFotoController cfc = fxmlLoader.<CrearFotoController>getController();
-                cfc.initDataFotoC(a, a.getFotos().get(index));
+                AnadirFotoController afc = fxmlLoader.<AnadirFotoController>getController();
+                afc.initData(a);
 
                 App.scene.setRoot(root);
             } catch (IOException ex) {
@@ -94,15 +103,17 @@ public class AlbumViewerController implements Initializable {
     }
     
     public void initDataNuevo(Album a) throws FileNotFoundException{
+        this.album = a;
+        
         albumName.setText(a.getName().replace("\"",""));
         albumDescription.setText(a.getDescription().replace("\"", ""));
         buttonAnadirFoto.setOnAction(e ->{ 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("crearFoto.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("anadirFoto.fxml"));
                 Parent root = fxmlLoader.load();
 
-                CrearFotoController cfc = fxmlLoader.<CrearFotoController>getController();
-                cfc.initDataFotoN(a);
+                AnadirFotoController afc = fxmlLoader.<AnadirFotoController>getController();
+                afc.initData(a);
 
                 App.scene.setRoot(root);
             } catch (IOException ex) {
@@ -140,6 +151,41 @@ public class AlbumViewerController implements Initializable {
         imageView.setPreserveRatio(true);
        
         hboxFotos.getChildren().add(imageView);
+    }
+
+    @FXML
+    private void buttonEliminar(ActionEvent event) throws IOException {
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Confirmación");
+            alert.setContentText("¿Estas seguro de confirmar la acción?");
+            Optional<ButtonType> action = alert.showAndWait();
+
+            if (action.get() == ButtonType.OK) {
+                App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));
+                Parent root = fxmlLoader.load();
+                App.scene.setRoot(root);  
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FotoViewerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    @FXML
+    private void buttonEditar(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("editarAlbum.fxml"));
+            Parent root = fxmlLoader.load();
+
+            EditarAlbumController eac = fxmlLoader.<EditarAlbumController>getController();
+            eac.initData(album);
+
+            App.scene.setRoot(root);
+        } catch (IOException ex) {
+        }
     }
 
     
