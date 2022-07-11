@@ -8,6 +8,7 @@ import Modelo.Album;
 import Modelo.Foto;
 import Modelo.Persona;
 import Util.ArrayList;
+import Util.CircularDoubleLinkedList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -237,7 +238,16 @@ public class CrearFotoController implements Initializable {
 
             Foto f = new Foto(id,name,place,route,al,ps,desc,cal);
             App.sys.getListaFotosSistema().addLast(f);
-            App.sys.getListaAlbumes().get(0).getFotos().addLast(f);
+            
+            if(App.sys.getListaAlbumes().get(0).getFotos() == null){
+                CircularDoubleLinkedList<Foto> fotos = new CircularDoubleLinkedList<>();
+                fotos.addLast(f);
+                App.sys.getListaAlbumes().get(0).setFotos(fotos);
+            }
+            else{
+                App.sys.getListaAlbumes().get(0).getFotos().addLast(f);
+            }
+            
             
             Files.copy(pathOrigen, pathDestino);
             App.sys.escribeFoto(f, App.rutaFoto);

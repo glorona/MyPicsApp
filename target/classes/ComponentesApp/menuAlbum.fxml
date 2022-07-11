@@ -2,17 +2,30 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ComponentesApp.MenuAlbumController">
   <tabs>
     <Tab text="Fotos">
       <content>
-        <AnchorPane fx:id="anchorPaneFotos" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane fx:id="anchorPaneFotos" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <CustomTextField fx:id="txtBuscaFoto" layoutX="105.0" layoutY="14.0" prefHeight="25.0" prefWidth="406.0" />
+                  <CheckComboBox fx:id="chkBoxBusqueda" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="77.0" />
+                  <Button layoutX="526.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonBuscar" text="BUSCAR" />
+                  <ScrollPane fx:id="paneFotos" layoutX="14.0" layoutY="58.0" prefHeight="305.0" prefWidth="575.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                    </content>
+                  </ScrollPane>
+               </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Álbumes">

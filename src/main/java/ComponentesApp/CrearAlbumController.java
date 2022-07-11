@@ -46,6 +46,7 @@ public class CrearAlbumController implements Initializable {
                 
                 Album album = new Album("\""+id.concat(String.valueOf(numId))+"\"", "\""+name+"\"", "\""+description+"\"", null);
                 App.sys.getListaAlbumes().addLast(album);
+                App.sys.escribeAlbum(album, App.rutaAlbum);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
                 Parent root = fxmlLoader.load();

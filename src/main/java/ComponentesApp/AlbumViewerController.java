@@ -6,6 +6,8 @@ package ComponentesApp;
 
 import Modelo.Album;
 import Modelo.Foto;
+import Util.ArrayList;
+import Util.CircularDoubleLinkedList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,6 +51,10 @@ public class AlbumViewerController implements Initializable {
     private Button buttonSiguienteFoto;
     @FXML
     private Button buttonAnadirFoto;
+    @FXML
+    private Button buttonEditarFoto;
+    @FXML
+    private Button buttonEliminarFoto;
 
     /**
      * Initializes the controller class.
@@ -63,10 +69,10 @@ public class AlbumViewerController implements Initializable {
     public void initDataCreado(Album a, int index) throws FileNotFoundException{
         this.album = a;
         
+        
+        
         albumName.setText(a.getName().replace("\"",""));
         albumDescription.setText(a.getDescription().replace("\"", ""));
-        
-        
         
         ListIterator <Foto> listaFotos = a.getFotos().listIterator(index);
         colocarFoto(a, listaFotos.next());
@@ -88,6 +94,12 @@ public class AlbumViewerController implements Initializable {
                 }
             }
         });
+        
+        if(album.getId().equals("\"a0\"")){
+            buttonAnadirFoto.setVisible(false);
+            buttonEliminarFoto.setVisible(false);
+            buttonEditarFoto.setVisible(false);
+        }
         
         buttonAnadirFoto.setOnAction(e ->{ 
             try {
@@ -158,6 +170,7 @@ public class AlbumViewerController implements Initializable {
     @FXML
     private void buttonEliminar(ActionEvent event) throws IOException {
         try {
+            CircularDoubleLinkedList<Foto> fotos = album.getFotos();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setTitle("Confirmación");
@@ -165,7 +178,31 @@ public class AlbumViewerController implements Initializable {
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK) {
+                for(int i=0; i<fotos.size();i++){
+                    
+                    ArrayList<String> cambios = new ArrayList<>();
+                    cambios.addLast("album");
+                    
+                    ArrayList<String> valores = new ArrayList<>();
+                    
+                    ArrayList<String> nuevosAlbumes = fotos.get(i).getAlbum();
+                    nuevosAlbumes.remove(nuevosAlbumes.indexOf(album.getId()));
+                    
+                    for(String nuevoA: nuevosAlbumes){
+                        valores.addLast(nuevoA);
+                    }
+                    
+                    App.sys.eliminaLineaFoto(fotos.get(i), App.rutaFoto, App.rutaFotofolder);
+                    App.sys.modificaFoto(fotos.get(i), cambios, valores);
+                    App.sys.escribeFoto(fotos.get(i), App.rutaFoto);
+
+                    
+                }
+                
                 App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
+                
+                
+                
                 FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));
                 Parent root = fxmlLoader.load();
                 App.scene.setRoot(root);  

@@ -31,7 +31,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button layoutX="443.0" layoutY="37.0" mnemonicParsing="false" onAction="#buttonEliminar" text="Eliminar" />
-      <Button layoutX="367.0" layoutY="37.0" mnemonicParsing="false" onAction="#buttonEditar" prefHeight="25.0" prefWidth="59.0" text="Editar" />
+      <Button fx:id="buttonEliminarFoto" layoutX="443.0" layoutY="37.0" mnemonicParsing="false" onAction="#buttonEliminar" text="Eliminar" />
+      <Button fx:id="buttonEditarFoto" layoutX="367.0" layoutY="37.0" mnemonicParsing="false" onAction="#buttonEditar" prefHeight="25.0" prefWidth="59.0" text="Editar" />
    </children>
 </AnchorPane>

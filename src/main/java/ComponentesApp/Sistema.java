@@ -175,6 +175,43 @@ public class Sistema {
         
     }
     
+    public void eliminaLineaFoto(Foto f, String ruta, String directorio){
+        //buscar la foto por su id en el archivo
+        //modificar la linea
+        //cerrar archivo
+
+
+        try(InputStream input = new URL("file:" + ruta).openStream()){
+             File archespecifico = new File(new URL("file:" + ruta).toString());
+             File archtemporal = new File(directorio + "archivotemp.txt");
+             BufferedReader lector = new BufferedReader(new InputStreamReader(input));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archtemporal));
+             String linea = null;
+             while((linea = lector.readLine())!= null){
+                 String[] datos = linea.split("#");
+                 String id = datos[0];
+                 if(id.equals(f.getPhotoid())){
+                     continue;
+                 }
+                 bw.write(linea + System.getProperty("line.separator"));
+
+
+            }
+
+             bw.close();
+             lector.close();
+             Path raiz = Paths.get(ruta);
+             Path destino = Paths.get(directorio + "archivotemp.txt");
+             Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
+
+         }
+         catch(IOException ex){
+             java.lang.System.out.println(ex.getMessage());
+
+         }
+
+    }
+    
     public void modificaCamara(Camara cam, ArrayList<String> cambios, ArrayList<String> valores){
         
         for(String c: cambios){
@@ -196,8 +233,8 @@ public class Sistema {
     }
     
     //metodos de busqueda
-    public CircularDoubleLinkedList<Foto> buscaSimpleFoto(String parametro, String valor, ArrayList<Foto> listaFotos){
-        CircularDoubleLinkedList<Foto> listaRetorno = new CircularDoubleLinkedList<Foto>();
+    public ArrayList<Foto> buscaSimpleFoto(String parametro, String valor, ArrayList<Foto> listaFotos){
+        ArrayList<Foto> listaRetorno = new ArrayList<Foto>();
         //se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
         if(parametro.equals("place")){
             for(Foto f: listaFotos){
@@ -266,7 +303,7 @@ public class Sistema {
         //Metodo devuelve una lista de albumes con fotos que contengan el parametro solicitado
         //Se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
             ArrayList<String> listaRetorno = new ArrayList<String>();
-            CircularDoubleLinkedList<Foto> result = null;
+            ArrayList<Foto> result = null;
             if(parametro.equals("people")){
                 //llamar al metodo de buscar foto ya que va a retornar lista global de fotos que contengan ese parametro solicitado
                 result = buscaSimpleFoto("people",valor,listaFotosSistema);
@@ -305,8 +342,8 @@ public class Sistema {
     
         }
     
-    public CircularDoubleLinkedList<Foto> buscaComplexFoto(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Foto> listaFotos){
-        CircularDoubleLinkedList<Foto> listaRetorno = new CircularDoubleLinkedList<Foto>();
+    public ArrayList<Foto> buscaComplexFoto(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Foto> listaFotos){
+        ArrayList<Foto> listaRetorno = new ArrayList<Foto>();
         
         //Obtener primer parametro y hacer busqueda inicial
         listaRetorno = buscaSimpleFoto(parametro.get(0),valor.get(0),listaFotosSistema);
@@ -334,7 +371,7 @@ public class Sistema {
     
     public ArrayList<String> buscaComplexAlbum(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Album> listaAlbumes){
         ArrayList<String> listaRetorno = new ArrayList<String>();
-        CircularDoubleLinkedList<Foto> result = null;
+        ArrayList<Foto> result = null;
         result = buscaComplexFoto(parametro,valor,listaFotosSistema);
         
         for(Album a: listaAlbumes){

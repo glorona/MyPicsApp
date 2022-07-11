@@ -156,9 +156,10 @@ public class FotoViewerController implements Initializable {
                 if (action.get() == ButtonType.OK) {
                     
                     App.sys.eliminaFoto(photo, App.rutaFoto, App.rutaFotofolder);
-                    App.sys.getListaFotosSistema().remove(App.sys.getListaFotosSistema().indexOf(photo));
                     File imagen = new File(photo.getRuta().replace("\"", ""));
                     imagen.delete();
+                    App.sys.getListaFotosSistema().remove(App.sys.getListaFotosSistema().indexOf(photo));
+                    
                     
                     FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));
                     Parent root = fxmlLoader.load();

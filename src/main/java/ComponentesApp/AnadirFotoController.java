@@ -72,11 +72,16 @@ public class AnadirFotoController implements Initializable {
         ArrayList<Foto> todasFotos = App.sys.getListaFotosSistema();
         CircularDoubleLinkedList<Foto> albumFotos = a.getFotos();
         
-        for(Foto ads: todasFotos){
-            System.out.println(albumFotos.contains(ads));
-            if(!albumFotos.contains(ads))
-                fotos.addLast(ads);
+        if(albumFotos == null){
+            for(Foto f: todasFotos)
+                fotos.addLast(f);
         }
+        else{
+            for(Foto ads: todasFotos){
+                if(!albumFotos.contains(ads))
+                    fotos.addLast(ads);
+            }
+        }        
         
         ObservableList<Foto> fotosComboBox = FXCollections.observableArrayList();
         for(Foto f: fotos)
@@ -116,7 +121,6 @@ public class AnadirFotoController implements Initializable {
             ArrayList<String> fotoAlbumes = cbxFotos.getValue().getAlbum();
             fotoAlbumes.addLast(a.getId());
             
-            
             cambios.addLast("album");
             
             StringBuilder sb = new StringBuilder();
@@ -139,13 +143,21 @@ public class AnadirFotoController implements Initializable {
     @FXML
     private void buttonAnadir(ActionEvent event) {
         
+        App.sys.eliminaLineaFoto(photo, App.rutaFoto, App.rutaFotofolder);
         App.sys.modificaFoto(photo, cambios, valores);
-        App.sys.eliminaFoto(photo, App.rutaFoto, App.rutaFotofolder);
         App.sys.escribeFoto(photo, App.rutaFoto);
-        albumMenu.getFotos().addLast(photo);
+        
+        if(albumMenu.getFotos() == null){
+            CircularDoubleLinkedList<Foto> fotos = new CircularDoubleLinkedList<>();
+            fotos.addLast(photo);
+            albumMenu.setFotos(fotos);
+        }
+        else{
+            albumMenu.getFotos().addLast(photo);
+        }
+        
         App.sys.getListaFotosSistema();
         regresar();
-        
     }
     
     private String construirTextoPersonas(Foto photo){

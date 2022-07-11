@@ -14,7 +14,7 @@ public class Foto
     private ArrayList<String> albumes;
     private Calendar fecha;
     private ArrayList<String> peopleid = new ArrayList(); //Lista de personas en la foto
-
+    private String camid;
     private String ruta;
     private String description;
 
@@ -31,7 +31,12 @@ public class Foto
         this.peopleid = ps;
         this.albumes = al;
     }
-
+    
+    public Foto(String id,String n, String p, String rut, ArrayList<String> al, ArrayList<String> ps, String desc, Calendar f, String cam){
+        super();
+        this.camid = cam;
+    }
+    
     public String getPhotoid() {
         return photoid;
     }
