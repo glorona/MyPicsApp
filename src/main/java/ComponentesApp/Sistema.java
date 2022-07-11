@@ -605,12 +605,16 @@ public class Sistema {
              Path destino = Paths.get(directorio + "archivotemp.txt");
              Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
              
+             /*
              for(int i=0; i<listaFotosSistema.size(); i++){
-                if(listaFotosSistema.get(i).getPhotoid().equals(f.getPhotoid())){
+                 String fvalor = f.getPhotoid().replace("\"","");
+                 String fbusca = listaFotosSistema.get(i).getPhotoid().replace("\"", "");
+                if(fvalor.equals(fbusca)){
                     listaFotosSistema.remove(i);
                 }
                 i++;
              }
+*/
              
              
              return true;

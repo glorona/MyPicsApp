@@ -178,6 +178,7 @@ public class AlbumViewerController implements Initializable {
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK) {
+                if(fotos != null){
                 for(int i=0; i<fotos.size();i++){
                     
                     ArrayList<String> cambios = new ArrayList<>();
@@ -195,11 +196,16 @@ public class AlbumViewerController implements Initializable {
                     App.sys.eliminaLineaFoto(fotos.get(i), App.rutaFoto, App.rutaFotofolder);
                     App.sys.modificaFoto(fotos.get(i), cambios, valores);
                     App.sys.escribeFoto(fotos.get(i), App.rutaFoto);
+                    App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
 
                     
                 }
+                }
+                else{
+                    App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
+                }
                 
-                App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
+                
                 
                 
                 

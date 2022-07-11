@@ -8,6 +8,7 @@ import Modelo.Album;
 import Modelo.Camara;
 import Modelo.Foto;
 import Modelo.Persona;
+import Util.CircularDoubleLinkedList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -181,7 +182,18 @@ public class FotoViewerController implements Initializable {
                 Optional<ButtonType> action = alert.showAndWait();
                 
                 if (action.get() == ButtonType.OK) {
-                    
+                    for(String s: photo.getAlbum()){
+                        s = s.replace("\"", "");
+                        for(Album a: App.sys.getListaAlbumes()){
+                            String aid = a.getId().replace("\"","");
+                            if(s.equals(aid)){
+                                Album a_f = App.sys.getListaAlbumes().get(App.sys.getListaAlbumes().indexOf(a));
+                                CircularDoubleLinkedList<Foto> fotosalbum = a_f.getFotos();
+                                fotosalbum.remove(fotosalbum.indexOf(photo));
+                            }
+                        }
+                    }
+                    App.sys.getListaFotosSistema().remove(App.sys.getListaFotosSistema().indexOf(photo));
                     App.sys.eliminaFoto(photo, App.rutaFoto, App.rutaFotofolder);
                     File imagen = new File(photo.getRuta().replace("\"", ""));
                     imagen.delete();

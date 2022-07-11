@@ -114,7 +114,7 @@ public class MenuAlbumController implements Initializable {
             if(numRows == 0){
                 numRows = 1;
             }
-            
+
             paneFotos.setContent(drawBus(numRows, 4, App.sys.getListaFotosSistema()));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();

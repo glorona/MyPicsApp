@@ -1,3 +1,1 @@
-"f0"#"Foto Graduacion"#"aaa"#"Archivos\Fotos\archivosfotos\f0.JPG"#"a0"#"p1"#"Hilton Colon"#20.02.2021#Nikon P06
-"f1"#"Kyro"#"aaa"#"Archivos\Fotos\archivosfotos\f1.JPG"#"a0"#"p1"#"Riobamba"#10.03.2021#c1
-"f2"#"Kyro en el patio"#"aaa"#"Archivos\Fotos\archivosfotos\f2.JPG"#"a0"#"p1"#"Patio"#10.07.2021#c1
+"f3"#"Yo"#"Hilton Colon "#"Archivos\Fotos\archivosfotos\f3.jpg"#"a0"#"p1"#"Yo frente al espejo"#10.03.2022#c2
