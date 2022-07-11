@@ -216,36 +216,27 @@ public class ArrayList<E> implements List<E>, Iterable<E>{
 
     @Override
     public boolean contains(E e) {
-        if(e.equals(null)){
-            return false;
-        }
-        for(int i=0;i<tam-1;i++){
-            if(arreglo[i].equals(e)){
+        for(int i=0; i<tam; i++)
+        {
+            if(arreglo[i].equals(e))
                 return true;
-            }
         }
         return false;
     }
 
     @Override
     public boolean remove(int index) {
-        if(index > tam-1){
-            throw new IndexOutOfBoundsException("El indice " + index +  " esta fuera del rango de la lista");
-        }
-        if(isEmpty()){
-            return false;
-        }
-        if(index == 0){
-            return removeFirst();
-        }
-        if(index == tam-1){
+      
+        if (index > tam -1) throw new IndexOutOfBoundsException("El indice pedido supera la capacidad del arreglo");
+        if(index==0) return removeFirst();
+        if(index == tam -1) return removeLast();
+        if(isEmpty()) return false;
+        else{
+            for (int i = index; i<=tam-2;i++){
+                arreglo[i]= arreglo[i+1];
+            }
             return removeLast();
         }
-        arreglo[index] = null;
-        for(int i=index;i<=tam-2;i++){
-            arreglo[i] = arreglo[i+1];
-        }
-        return removeLast();
 
     }
     

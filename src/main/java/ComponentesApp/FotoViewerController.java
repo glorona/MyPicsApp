@@ -5,6 +5,7 @@
 package ComponentesApp;
 
 import Modelo.Album;
+import Modelo.Camara;
 import Modelo.Foto;
 import Modelo.Persona;
 import java.io.File;
@@ -55,6 +56,8 @@ public class FotoViewerController implements Initializable {
     private Label lugarLabel;
     @FXML
     private Button buttonEliminarFoto;
+    @FXML
+    private Label camLabel;
 
     /**
      * Initializes the controller class.
@@ -78,7 +81,19 @@ public class FotoViewerController implements Initializable {
         persLabel.setText(construirTextoPersonas(photo));
         fechaLabel.setText(dateFormat.format(photo.getFecha().getTime()));
         lugarLabel.setText(photo.getPlace().replace("\"",""));
-        
+        if(photo.getCamid() != null){
+            String campros = photo.getCamid().replace("\"", "");
+            for(Camara c: App.sys.getListaCamaras()){
+                String camlis = c.getId().replace("\"","");
+                
+                if(camlis.equals(campros)){
+                    camLabel.setText(c.toString());
+                }
+            }
+        }
+        else{
+            camLabel.setText("No establecido");
+        }
         String rutaFoto = photo.getRuta().replace("\"", "");
         
         
@@ -120,7 +135,19 @@ public class FotoViewerController implements Initializable {
         persLabel.setText(construirTextoPersonas(photo));
         fechaLabel.setText(dateFormat.format(photo.getFecha().getTime()));
         lugarLabel.setText(photo.getPlace().replace("\"",""));
-        
+        if(photo.getCamid() != null){
+            String campros = photo.getCamid().replace("\"", "");
+            for(Camara c: App.sys.getListaCamaras()){
+                String camlis = c.getId().replace("\"","");
+                
+                if(camlis.equals(campros)){
+                    camLabel.setText(c.toString());
+                }
+            }
+        }
+        else{
+            camLabel.setText("No establecido");
+        }
         String rutaFoto = photo.getRuta().replace("\"", "");
         
         
@@ -158,7 +185,7 @@ public class FotoViewerController implements Initializable {
                     App.sys.eliminaFoto(photo, App.rutaFoto, App.rutaFotofolder);
                     File imagen = new File(photo.getRuta().replace("\"", ""));
                     imagen.delete();
-                    App.sys.getListaFotosSistema().remove(App.sys.getListaFotosSistema().indexOf(photo));
+                    
                     
                     
                     FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));

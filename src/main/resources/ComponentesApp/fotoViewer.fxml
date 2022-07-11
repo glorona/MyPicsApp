@@ -61,5 +61,15 @@
          </font>
       </Label>
       <Button layoutX="425.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonEditar" prefHeight="25.0" prefWidth="59.0" text="Editar" />
+      <Label layoutX="319.0" layoutY="292.0" text="Camara:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="camLabel" layoutX="376.0" layoutY="292.0" text="label">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

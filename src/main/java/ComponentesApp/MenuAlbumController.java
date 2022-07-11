@@ -54,6 +54,10 @@ public class MenuAlbumController implements Initializable {
     private CheckComboBox<String> chkBoxBusqueda;
     @FXML
     private ScrollPane paneFotos;
+    @FXML
+    private CustomTextField txtbuscaAlbum;
+    @FXML
+    private CheckComboBox<String> chkBuscaAlbum;
 
     /**
      * Initializes the controller class.
@@ -72,16 +76,30 @@ public class MenuAlbumController implements Initializable {
         cambio.addLast("camara");
         
         final ObservableList<String> cambios = FXCollections.observableArrayList();
+       
         
         for(String c: cambio)
             cambios.add(c);
         
         
         chkBoxBusqueda.getItems().setAll(cambios);
+        chkBuscaAlbum.getItems().setAll(cambios);
         
         chkBoxBusqueda.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
             for(int i=0; i<cambio.size(); i++){
                 if(chkBoxBusqueda.getCheckModel().isChecked(i)){
+                    opcionesBusqueda.addLast(cambio.get(i));
+                }
+            }
+        
+        });
+        
+        
+        
+        
+        chkBuscaAlbum.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
+            for(int i=0; i<cambio.size(); i++){
+                if(chkBuscaAlbum.getCheckModel().isChecked(i)){
                     opcionesBusqueda.addLast(cambio.get(i));
                 }
             }
@@ -229,10 +247,24 @@ public class MenuAlbumController implements Initializable {
             alert.show();
         }
         
+        System.out.println(datosBusqueda.size());
+        System.out.println(opcionesBusqueda.size());
+        
+        if(datosBusqueda.size() != opcionesBusqueda.size()-1){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Error de Busqueda");
+            alert.setContentText("Los valores ingresados difieren de las opciones seleccionadas.");
+            alert.show();
+            
+        }
+        
         if(datosBusqueda.size() == 1){
             
             ArrayList<Foto> resultadosBFotos = App.sys.buscaSimpleFoto(opcionesBusqueda.get(0), datosBusqueda.get(0), App.sys.getListaFotosSistema());
-            
+            for(Foto f: resultadosBFotos){
+                System.out.println(f.getPhotoid());
+            }
             double totalFotos = (double) resultadosBFotos.size();
             int numRows = (int) Math.ceil(totalFotos/3);
             if(numRows == 0){
@@ -241,6 +273,151 @@ public class MenuAlbumController implements Initializable {
             
             paneFotos.setContent(drawBus(numRows, 4, resultadosBFotos));
         }
+        if(datosBusqueda.size() > 1){
+            ArrayList<Foto> resultadosFotos = new ArrayList<Foto>();
+            int iter = datosBusqueda.size();
+            for(int i = 0; i<iter;i++){
+                resultadosFotos = App.sys.buscaSimpleFoto(opcionesBusqueda.get(0),datosBusqueda.get(0),App.sys.getListaFotosSistema());
+            }
+            double totalFotos = (double) resultadosFotos.size();
+            int numRows = (int) Math.ceil(totalFotos/3);
+            if(numRows == 0){
+                numRows = 1;
+            }
+            
+            paneFotos.setContent(drawBus(numRows, 4, resultadosFotos));
+            
+        }
+    }
+
+    @FXML
+    private void buttonBuscaAlbum(ActionEvent event) throws IOException{
+        String busqueda = txtbuscaAlbum.getText();
+        
+        String[] datos = busqueda.split(",");
+        
+        ArrayList<String> datosBusqueda = new ArrayList<>();
+        
+        for(String d: datos)
+            datosBusqueda.addLast(d);
+        
+        if(datosBusqueda.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Error de Busqueda");
+            alert.setContentText("Los valores de los parametros a buscar, tienen que estar separados por comas. Ejemplo: nombre,fecha");
+            alert.show();
+        }
+        
+        if(datosBusqueda.size() != opcionesBusqueda.size()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Error de Busqueda");
+            alert.setContentText("Los valores ingresados difieren de las opciones seleccionadas.");
+            alert.show();
+            
+        }
+        
+        if(datosBusqueda.size() == 1){
+            
+        
+            
+            
+            ArrayList<String> resultadosBAlbum = App.sys.buscaSimpleAlbum(opcionesBusqueda.get(0), datosBusqueda.get(0), App.sys.getListaAlbumes());
+            
+            
+            ArrayList<Album> listaRes = new ArrayList<Album>();
+            for(Album a: App.sys.getListaAlbumes()){
+                String aid = a.getId();
+                aid = aid.replace("\"", "");
+                for(String id: resultadosBAlbum){
+                    String idnew = id.replace("\"", "");
+                    //System.out.println(id);
+                    if(idnew.equals(aid)){
+                        listaRes.addLast(a);
+                    }
+                
+                }
+                
+            }
+            
+            ArrayList<Album> listaResFiltro = new ArrayList<Album>();
+            for(Album a: listaRes){
+                if(!listaResFiltro.contains(a)){
+                    listaResFiltro.addLast(a);
+                }
+            }
+            
+            
+            buttonsAlbum.getChildren().clear();
+
+            agregarBotones(listaResFiltro);
+        }
+        if(datosBusqueda.size() > 1){
+            ArrayList<String> resultadosBAlbum = new ArrayList<String>();
+            int iter = datosBusqueda.size();
+            for(int i = 0; i<iter;i++){
+                resultadosBAlbum = App.sys.buscaSimpleAlbum(opcionesBusqueda.get(0), datosBusqueda.get(0), App.sys.getListaAlbumes());
+            }
+            
+            ArrayList<Album> listaRes = new ArrayList<Album>();
+            for(Album a: App.sys.getListaAlbumes()){
+                String aid = a.getId();
+                aid = aid.replace("\"", "");
+                for(String id: resultadosBAlbum){
+                    String idnew = id.replace("\"", "");
+                    //System.out.println(id);
+                    if(idnew.equals(aid)){
+                        listaRes.addLast(a);
+                    }
+                
+                }
+                
+            }
+            
+            ArrayList<Album> listaResFiltro = new ArrayList<Album>();
+            for(Album a: listaRes){
+                if(!listaResFiltro.contains(a)){
+                    listaResFiltro.addLast(a);
+                }
+            }
+            
+            
+            
+            buttonsAlbum.getChildren().clear();
+            agregarBotones(listaResFiltro);
+            
+        }
+        
+    }
+
+    @FXML
+    private void buttonReload(ActionEvent event) throws IOException {
+            refresh();
+        
+    }
+
+    @FXML
+    private void buttonActualizarAlbum(ActionEvent event) throws IOException {
+        refreshAlbum();
+    }
+    
+    private void refreshAlbum() throws IOException{
+        chkBuscaAlbum.getCheckModel().clearChecks();
+        txtbuscaAlbum.setText("");
+        buttonsAlbum.getChildren().clear();
+        agregarBotones(App.sys.getListaAlbumes());
+    }
+    
+    private void refresh() throws IOException{
+        double totalFotos = (double) App.sys.getListaFotosSistema().size();
+            int numRows = (int) Math.ceil(totalFotos/3);
+            if(numRows == 0){
+                numRows = 1;
+            }
+            chkBoxBusqueda.getCheckModel().clearChecks();
+            txtBuscaFoto.setText("");
+            paneFotos.setContent(drawBus(numRows, 4, App.sys.getListaFotosSistema()));
     }
     
 }

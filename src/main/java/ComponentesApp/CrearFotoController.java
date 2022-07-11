@@ -5,6 +5,7 @@
 package ComponentesApp;
 
 import Modelo.Album;
+import Modelo.Camara;
 import Modelo.Foto;
 import Modelo.Persona;
 import Util.ArrayList;
@@ -33,7 +34,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -51,6 +54,7 @@ public class CrearFotoController implements Initializable {
     
     private ArrayList<Path> paths = new ArrayList<>(); 
     private ArrayList<String> ps = new ArrayList<>(); 
+    private Camara cam;
 
     @FXML
     private TextField txtNameNewFoto;
@@ -66,6 +70,8 @@ public class CrearFotoController implements Initializable {
     private HBox hboxFoto;
     @FXML
     private Button buttonCancelar;
+    @FXML
+    private ComboBox<Camara> comboCam;
     /**
      * Initializes the controller class.
      * @param url
@@ -74,6 +80,17 @@ public class CrearFotoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         checkComboBoxMenu();
+        ObservableList<Camara> camaras = FXCollections.observableArrayList();
+        for(Camara c: App.sys.getListaCamaras())
+            camaras.add(c);
+        comboCam.getItems().setAll(camaras);
+        
+        comboCam.setOnAction(e -> {
+            this.cam = comboCam.getValue();
+            if(comboCam.getSelectionModel().isEmpty()){
+                this.cam = null;
+            }
+        });
     }    
     
     public void initDataMenu(){
@@ -106,9 +123,14 @@ public class CrearFotoController implements Initializable {
     private String fotoId(){
         int a = -1;
         for(Foto f: App.sys.getListaFotosSistema()){
+            if(App.sys.getListaFotosSistema().size() != 0){
             int b = Integer.parseInt(f.getPhotoid().replace("\"", "").substring(1));
             if(b > a){
                 a = b;
+            }
+            }
+            else{
+                a=-1;
             }
         }
         int numId = a+1;
@@ -219,8 +241,40 @@ public class CrearFotoController implements Initializable {
     @FXML
     private void buttonAceptar(MouseEvent event) throws IOException {
         try {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            if(txtNameNewFoto.getText().equals("") || txtDescNewFoto.getText().equals("") || txtPlaceNewFoto.getText().equals("") || txtDateNewFoto.getText().equals("") || checkBox.getCheckModel().getCheckedItems().isEmpty() ){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                if(txtNameNewFoto.getText().equals("")){
+                    txtNameNewFoto.setText("");
+                    alert.setHeaderText("Error de Nombre");
+                    alert.setContentText("Nombre no puede estar vacio.");
+                }
+                if(txtDescNewFoto.getText().equals("")){
+                    alert.setHeaderText("Error de Descripcion");
+                    alert.setContentText("Descripcion no puede estar vacio.");
+                    
+                }
+                if(txtPlaceNewFoto.getText().equals("")){
+                    alert.setHeaderText("Error de Lugar");
+                    alert.setContentText("Lugar no puede estar vacio.");
+                    
+                }
+                if(txtDateNewFoto.getText().equals("")){
+                    alert.setHeaderText("Error de Fecha");
+                    alert.setContentText("Fecha no puede estar vacio.");
+                }
+                if(checkBox.getCheckModel().getCheckedItems().size() == 0){
+                    alert.setHeaderText("No hay personas en esta foto");
+                    alert.setContentText("Por favor, agregue personas que estan en la foto.");
+                }
+                alert.show();
+                   
+            }
+            else{
             String id = fotoId();
             String name = "\"" + txtNameNewFoto.getText() + "\"";
+            
             String desc = "\"" + txtDescNewFoto.getText() + "\"";
             String place = "\"" + txtPlaceNewFoto.getText() + "\"";
             String fecha = txtDateNewFoto.getText();
@@ -232,13 +286,35 @@ public class CrearFotoController implements Initializable {
             ArrayList<String> al = new ArrayList<>();
             al.addLast("\"a0\"");
 
-            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
             Calendar cal = Calendar.getInstance();
             cal.setTime(df.parse(fecha));
+            if(cam != null){
+                String cid = cam.getId();
+                System.out.println(cid);
+                cid = cid.replace("\"","");
+                Foto f = new Foto(id,name,place,route,al,ps,desc,cal,cid);
+                App.sys.getListaFotosSistema().addLast(f);
+                
+                
+                if(App.sys.getListaAlbumes().get(0).getFotos() == null){
+                CircularDoubleLinkedList<Foto> fotos = new CircularDoubleLinkedList<>();
+                fotos.addLast(f);
+                App.sys.getListaAlbumes().get(0).setFotos(fotos);
+                }
+                else{
+                App.sys.getListaAlbumes().get(0).getFotos().addLast(f);
+                }
 
+                Files.copy(pathOrigen, pathDestino);
+                App.sys.escribeFoto(f, App.rutaFoto);
+            }
+            
+            
+            
+            
+            else{
             Foto f = new Foto(id,name,place,route,al,ps,desc,cal);
             App.sys.getListaFotosSistema().addLast(f);
-            
             if(App.sys.getListaAlbumes().get(0).getFotos() == null){
                 CircularDoubleLinkedList<Foto> fotos = new CircularDoubleLinkedList<>();
                 fotos.addLast(f);
@@ -248,13 +324,15 @@ public class CrearFotoController implements Initializable {
                 App.sys.getListaAlbumes().get(0).getFotos().addLast(f);
             }
             
-            
             Files.copy(pathOrigen, pathDestino);
             App.sys.escribeFoto(f, App.rutaFoto);
+            }
+            
             
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("menuAlbum.fxml"));
             Parent root = fxmlLoader.load();                
             App.scene.setRoot(root);
+            }
             
         } catch (IOException | ParseException ex) {
             Logger.getLogger(CrearFotoController.class.getName()).log(Level.SEVERE, null, ex);

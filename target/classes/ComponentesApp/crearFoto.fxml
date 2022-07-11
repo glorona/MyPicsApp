@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ComponentesApp.CrearFotoController">
@@ -23,5 +25,7 @@
       <CheckComboBox fx:id="checkBox" layoutX="421.0" layoutY="205.0" prefHeight="25.0" prefWidth="159.0" />
       <HBox fx:id="hboxFoto" layoutX="53.0" layoutY="40.0" prefHeight="267.0" prefWidth="269.0" />
       <Button layoutX="482.0" layoutY="323.0" mnemonicParsing="false" onMouseClicked="#buttonAceptar" prefHeight="25.0" prefWidth="75.0" text="ACEPTAR" />
+      <ComboBox fx:id="comboCam" layoutX="421.0" layoutY="250.0" prefHeight="25.0" prefWidth="159.0" />
+      <Text layoutX="361.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cámara:" wrappingWidth="50.0" />
    </children>
 </AnchorPane>

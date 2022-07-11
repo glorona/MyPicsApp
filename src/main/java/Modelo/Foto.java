@@ -33,9 +33,26 @@ public class Foto
     }
     
     public Foto(String id,String n, String p, String rut, ArrayList<String> al, ArrayList<String> ps, String desc, Calendar f, String cam){
-        super();
+        this.photoid = id;
+        this.name = n;
+        this.place = p;
+        this.ruta = rut;
+        this.description = desc;
+        this.fecha = f;
+        this.peopleid = ps;
+        this.albumes = al;
         this.camid = cam;
     }
+
+    public String getCamid() {
+        return camid;
+    }
+
+    public void setCamid(String camid) {
+        this.camid = camid;
+    }
+    
+    
     
     public String getPhotoid() {
         return photoid;

@@ -1,2 +1,4 @@
 "a0"#"Album de fotos comun"#"Album donde se encuentran todas las fotos insertadas."
-"a1"#"aaaaaaaaa"#""
+"a2"#"Ronald"#"ronald"
+"a3"#"gabriel"#"gabriel"
+"a4"#"Gabriel y Ronald"#"Juntos"

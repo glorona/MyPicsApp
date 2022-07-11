@@ -49,6 +49,8 @@ public class EditarFotoController implements Initializable {
     private ArrayList<String> valores = new ArrayList<>();
     private Foto photo;
     
+    private Camara cam;
+    
     @FXML
     private CheckBox chkName;
     @FXML
@@ -79,6 +81,12 @@ public class EditarFotoController implements Initializable {
     private Label fotoPlace;
     @FXML
     private Label fotoPeople;
+    @FXML
+    private CheckBox chkCam;
+    @FXML
+    private ComboBox<Camara> checkCam;
+    @FXML
+    private Label fotoCam;
 
     /**
      * Initializes the controller class.
@@ -86,6 +94,17 @@ public class EditarFotoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         checkComboBoxMenu();
+        ObservableList<Camara> camaras = FXCollections.observableArrayList();
+        for(Camara c: App.sys.getListaCamaras())
+            camaras.add(c);
+        checkCam.getItems().setAll(camaras);
+        
+        checkCam.setOnAction(e -> {
+            this.cam = checkCam.getValue();
+            if(checkCam.getSelectionModel().isEmpty()){
+                this.cam = null;
+            }
+        });
         
     }    
     
@@ -98,6 +117,12 @@ public class EditarFotoController implements Initializable {
         fotoPeople.setText(construirTextoPersonas(f));
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         fotoDate.setText(dateFormat.format(f.getFecha().getTime()));
+        if(f.getCamid() != null){
+        fotoCam.setText(f.getCamid().replace("\"",""));
+        }
+        else{
+            fotoCam.setText("No establecido");
+        }
     }
     
     private void checkComboBoxMenu(){
@@ -155,11 +180,13 @@ public class EditarFotoController implements Initializable {
         boolean isPlace = chkPlace.isSelected();
         boolean isDate = chkDate.isSelected();
         boolean isPeople = chkPeople.isSelected();
+        boolean isCam = chkCam.isSelected();
         
         String newName = "\"" + txtName.getText() + "\"";
         String newDesc = "\"" + txtDesc.getText() + "\"";
         String newPlace = "\"" + txtPlace.getText() + "\"";
         String newDate = txtDate.getText();
+        
         
         if(isName){
             cambios.addLast("name");
@@ -191,8 +218,16 @@ public class EditarFotoController implements Initializable {
             String newPeople = sb.toString().substring(0, sb.toString().length()-1);
             valores.addLast(newPeople);
         }
+        if(isCam){
+            cambios.addLast("cam");
+            valores.addLast(cam.toString());
+            
+        }
         
         App.sys.modificaFoto(photo, cambios, valores);
+        App.sys.eliminaLineaFoto(photo, App.rutaFoto, App.rutaFotofolder);
+        App.sys.escribeFoto(photo, App.rutaFoto);
+        
         regresar();
     }
     

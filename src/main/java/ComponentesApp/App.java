@@ -16,6 +16,8 @@ public class App extends Application {
 
     static Scene scene;
     
+    static Stage mStage;
+    
     public static String rutaCamara = "Archivos/Camaras/camaras.txt";
     
     public static String rutaCamarafolder = "Archivos/Camaras/";
@@ -38,9 +40,12 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("menuAlbum"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+        mStage = stage;
+        scene = new Scene(loadFXML("menuAlbum"));
+        mStage.setScene(scene);
+        mStage.sizeToScene();
+        mStage.setResizable(false);
+        mStage.show();
     }
 
     static void setRoot(String fxml) throws IOException {

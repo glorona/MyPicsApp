@@ -47,6 +47,7 @@ public class Sistema {
         this.listaFotosSistema = construyeFotos(App.rutaFoto);
         this.listaCamaras = construyeCamaras(App.rutaCamara);
         colocaFotosAlbum(listaAlbumes,listaFotosSistema);
+
     }
     
     
@@ -155,6 +156,10 @@ public class Sistema {
                 }
                 valores.remove(0);
             }
+            if(c.equals("cam")){
+                f.setCamid(valores.get(0));
+                valores.remove(0);
+            }
             
             
         }
@@ -246,13 +251,27 @@ public class Sistema {
             return listaRetorno;
         }
         if(parametro.equals("people")){
+            
             String[] datospeople = valor.split("#"); //formato de envio "p1#p2#p3"
             int confirmaciones_ne = datospeople.length; //obtener la cantidad de confirmaciones necesarias para confirmar que la foto vale
             int confirmaciones_act = 0;
             for(Foto f: listaFotos){
+                confirmaciones_act = 0;
                  for(int i = 0; i<datospeople.length;i++){
-                     String persona_act = datospeople[i];
+                     Persona per = null;
+                     for(Persona p: listaPersonas){
+                         String p_finder = p.getName();
+                         p_finder = p_finder.replace("\"", "");
+                         if(p_finder.equals(datospeople[i])){
+                             
+                             per = p;
+                         }
+                     }
+                     String persona_act = per.getId(); //p1
+                     persona_act = persona_act.replace("\"", "");
+                     //System.out.println(persona_act);
                      for(String idpersona: f.getPeople()){
+                         idpersona = idpersona.replace("\"", "");
                          if(idpersona.equals(persona_act)){
                              confirmaciones_act++;
                          }
@@ -289,6 +308,37 @@ public class Sistema {
         }
         
         //POR HACER: BUSCAR POR CAMARA (MARCA O MODELO)
+        if(parametro.equals("camara")){
+            Camara cfound = null;
+            for(Camara c:listaCamaras){
+                    String c_busca = c.getModelo().replace("\"", "");
+                    if(c_busca.equals(valor)){
+                        cfound = c;
+                    }
+                    
+                }
+            for(Foto f: listaFotos){
+                if(f.getCamid() != null){
+                
+                
+                //Buscar el id por el nombre
+                //coincide toma esa camara
+                //busca las fotos que tengan ese id de camara
+                
+                
+                //nombre
+                String camPro = f.getCamid().replace("\"","");
+                String c_found = cfound.getId().replace("\"", "");
+                if(camPro.equals(c_found)){
+                    listaRetorno.addLast(f);
+                }
+                
+
+            }
+            }
+            return listaRetorno;
+            
+        }
         
         
         
@@ -320,6 +370,12 @@ public class Sistema {
                 
                 
             }
+            
+            if(parametro.equals("camara")){
+                result = buscaSimpleFoto("camara",valor,listaFotosSistema);
+            }
+            
+            
             //tendriamos que buscar los albumid a los que pertenece cada foto
             for(Album a: listaAlbumes){
                     for(Foto f: result){
@@ -338,6 +394,7 @@ public class Sistema {
             return listaRetorno;
             
             //por hacer camara modelo y marca
+            
         
     
         }
@@ -497,9 +554,14 @@ public class Sistema {
                  DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                  Calendar cal = Calendar.getInstance();
                  cal.setTime(df.parse(datos[7]));
+                 if(datos.length > 8 ){
+                     String camid = datos[8];
+                     listafotos.addLast(new Foto(id,name,place,route,al,ps,desc,cal,camid));
+                }
+                 else{
                
                  listafotos.addLast(new Foto(id,name,place,route,al,ps,desc,cal)); //String n, String p, String ruta, ArrayList<Album> al, ArrayList<Persona> ps, String desc, Calendar f
-                
+                 }
              }
          }
          catch(ParseException ex){
@@ -822,6 +884,10 @@ public class Sistema {
             stb.append("#");
             //parse calendar
             stb.append(dateFormat.format(f.getFecha().getTime()));
+            stb.append("#");
+            if(f.getCamid() != null){
+                stb.append(f.getCamid());
+            }
             stb.append("\n");
             
             FileOutputStream escritor = new FileOutputStream(ruta, true);
@@ -976,6 +1042,22 @@ public class Sistema {
 
     public ArrayList<Camara> getListaCamaras() {
         return listaCamaras;
+    }
+
+    public void setListaAlbumes(ArrayList<Album> listaAlbumes) {
+        this.listaAlbumes = listaAlbumes;
+    }
+
+    public void setListaPersonas(ArrayList<Persona> listaPersonas) {
+        this.listaPersonas = listaPersonas;
+    }
+
+    public void setListaFotosSistema(ArrayList<Foto> listaFotosSistema) {
+        this.listaFotosSistema = listaFotosSistema;
+    }
+
+    public void setListaCamaras(ArrayList<Camara> listaCamaras) {
+        this.listaCamaras = listaCamaras;
     }
     
     
