@@ -102,8 +102,8 @@ public class FotoViewerController implements Initializable {
         try (FileInputStream cerrar = new FileInputStream(rutaFoto)) {
             Image image = new Image(cerrar);
             imageView = new ImageView(image);
-            imageView.setFitHeight(150);
-            imageView.setFitWidth(150);
+            imageView.setFitHeight(250);
+            imageView.setFitWidth(250);
             imageView.setPreserveRatio(true);
         }
        
@@ -156,8 +156,8 @@ public class FotoViewerController implements Initializable {
         try (FileInputStream cerrar = new FileInputStream(rutaFoto)) {
             Image image = new Image(cerrar);
             imageView = new ImageView(image);
-            imageView.setFitHeight(150);
-            imageView.setFitWidth(150);
+            imageView.setFitHeight(250);
+            imageView.setFitWidth(250);
             imageView.setPreserveRatio(true);
         }
        

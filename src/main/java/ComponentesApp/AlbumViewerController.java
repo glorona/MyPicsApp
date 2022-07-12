@@ -160,8 +160,8 @@ public class AlbumViewerController implements Initializable {
             } catch (IOException ex) {
             }
         });
-        imageView.setFitHeight(150); 
-        imageView.setFitWidth(150);
+        imageView.setFitHeight(250); 
+        imageView.setFitWidth(250);
         imageView.setPreserveRatio(true);
        
         hboxFotos.getChildren().add(imageView);
