@@ -103,6 +103,15 @@ public class Sistema {
         
     }
     
+    public void reload(){
+        setListaAlbumes(construyeAlbumes(App.rutaAlbum));
+        setListaPersonas(construyePersonas(App.rutaPersona));
+        setListaFotosSistema(construyeFotos(App.rutaFoto));
+        setListaCamaras(construyeCamaras(App.rutaCamara));
+        colocaFotosAlbum(listaAlbumes,listaFotosSistema);
+        
+    }
+    
     
     public void modificaFoto(Foto f, ArrayList<String> cambios, ArrayList<String> valores){
         for(String c: cambios){
@@ -243,7 +252,8 @@ public class Sistema {
         //se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
         if(parametro.equals("place")){
             for(Foto f: listaFotos){
-            if(valor.equals(f.getPlace())){
+               valor = valor.replace("\"", "");
+            if(valor.equals(f.getPlace().replace("\"", ""))){
                 listaRetorno.addLast(f);
                 
                 }
@@ -807,12 +817,14 @@ public class Sistema {
              Path destino = Paths.get(directorio + "archivotemp.txt");
              Files.move(destino, raiz, StandardCopyOption.REPLACE_EXISTING);
              
+             /*
              for(int i=0; i<listaAlbumes.size(); i++){
                 if(listaAlbumes.get(i).getId().equals(a.getId())){
                     listaAlbumes.remove(i);
                 }
                 i++;
              }
+*/
              return true;
              
          }

@@ -21,11 +21,7 @@
                   <CustomTextField fx:id="txtBuscaFoto" layoutX="119.0" layoutY="14.0" prefHeight="25.0" prefWidth="414.0" />
                   <CheckComboBox fx:id="chkBoxBusqueda" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="99.0" />
                   <Button layoutX="540.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonBuscar" prefHeight="25.0" prefWidth="60.0" text="Buscar" />
-                  <ScrollPane fx:id="paneFotos" layoutX="14.0" layoutY="58.0" prefHeight="395.0" prefWidth="671.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                    </content>
-                  </ScrollPane>
+                  <ScrollPane fx:id="paneFotos" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="14.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="395.0" prefWidth="671.0" />
                   <Button layoutX="612.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonReload" text="Actualizar ⟳" />
                </children></AnchorPane>
       </content>

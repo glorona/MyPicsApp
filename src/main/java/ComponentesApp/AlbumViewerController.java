@@ -194,6 +194,7 @@ public class AlbumViewerController implements Initializable {
                     }
                     
                     App.sys.eliminaLineaFoto(fotos.get(i), App.rutaFoto, App.rutaFotofolder);
+                    App.sys.getListaAlbumes().remove(App.sys.getListaAlbumes().indexOf(album));
                     App.sys.modificaFoto(fotos.get(i), cambios, valores);
                     App.sys.escribeFoto(fotos.get(i), App.rutaFoto);
                     App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
@@ -202,6 +203,7 @@ public class AlbumViewerController implements Initializable {
                 }
                 }
                 else{
+                    App.sys.getListaAlbumes().remove(App.sys.getListaAlbumes().indexOf(album));
                     App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
                 }
                 

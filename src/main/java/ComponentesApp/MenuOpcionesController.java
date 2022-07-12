@@ -5,6 +5,7 @@
 package ComponentesApp;
 
 import Modelo.Camara;
+import Modelo.Foto;
 import Modelo.Persona;
 import Util.ArrayList;
 import java.io.IOException;
@@ -136,9 +137,22 @@ public class MenuOpcionesController implements Initializable {
 
     @FXML
     private void buttonEliminar(ActionEvent event) {
+        boolean confirmaFotoex = false;
+        for (Foto f:App.sys.getListaFotosSistema()){
+            if(f.getPeople().contains(person.getId())){
+                confirmaFotoex = true;
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Error en eliminacion.");
+                alert.setTitle("Info");
+                alert.setContentText("No se puede eliminar a la persona " + person.getName() + "ya que aparece en una o mas fotos.");
+                alert.showAndWait();
+            }
+        }
+        
+        if(!confirmaFotoex){
         App.sys.getListaPersonas().remove(App.sys.getListaPersonas().indexOf(person));
         App.sys.eliminaPersona(person, App.rutaPersona, App.rutaPersonasfolder);
-        
+      
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -147,6 +161,7 @@ public class MenuOpcionesController implements Initializable {
         alert.showAndWait();
         
         regresar();
+        }
     }
 
     @FXML
@@ -193,7 +208,7 @@ public class MenuOpcionesController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setTitle("Info");
-        alert.setContentText("Se ha creado la cámara " + cam.getTipo().replace("\"", "") + " " + cam.getModelo().replace("\"", ""));
+        alert.setContentText("Se ha creado la cámara " + newcam.getTipo().replace("\"", "") + " " + newcam.getModelo().replace("\"", ""));
         alert.showAndWait();
         
         regresar();
@@ -250,6 +265,21 @@ public class MenuOpcionesController implements Initializable {
 
     @FXML
     private void buttonEliminarCam(ActionEvent event) {
+         boolean confirmaFotoex = false;
+         
+        for (Foto f:App.sys.getListaFotosSistema()){
+            
+            String fid = f.getCamid().replace("\"","");
+            if(fid.equals(cam.getId().replace("\"", ""))){
+                confirmaFotoex = true;
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Error en eliminacion.");
+                alert.setTitle("Info");
+                alert.setContentText("No se puede eliminar camara" + cam.toString() + "ya que esta siendo usada en una o mas fotos.");
+                alert.showAndWait();
+            }
+        }
+        if(!confirmaFotoex){
         App.sys.getListaCamaras().remove(App.sys.getListaCamaras().indexOf(cam));
         App.sys.eliminaCamara(cam, App.rutaCamara, App.rutaCamarafolder);
         
@@ -261,6 +291,7 @@ public class MenuOpcionesController implements Initializable {
         alert.showAndWait();
         
         regresar();
+        }
     }
     
     

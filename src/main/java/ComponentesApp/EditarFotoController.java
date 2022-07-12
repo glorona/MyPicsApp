@@ -220,7 +220,7 @@ public class EditarFotoController implements Initializable {
         }
         if(isCam){
             cambios.addLast("cam");
-            valores.addLast(cam.toString());
+            valores.addLast(cam.getId());
             
         }
         

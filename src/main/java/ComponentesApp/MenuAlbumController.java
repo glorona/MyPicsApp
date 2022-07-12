@@ -172,8 +172,8 @@ public class MenuAlbumController implements Initializable {
                         Image image = new Image(cerrar);
                         imageView = new ImageView(image);
                         imageView.setPreserveRatio(true);
-                        imageView.setFitHeight(150);
-                        imageView.setFitWidth(150);
+                        imageView.setFitHeight(200);
+                        imageView.setFitWidth(200);
                     }
                     
                     imageView.setOnMouseClicked(e -> {
@@ -250,14 +250,6 @@ public class MenuAlbumController implements Initializable {
         System.out.println(datosBusqueda.size());
         System.out.println(opcionesBusqueda.size());
         
-        if(datosBusqueda.size() != opcionesBusqueda.size()-1){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText("Error de Busqueda");
-            alert.setContentText("Los valores ingresados difieren de las opciones seleccionadas.");
-            alert.show();
-            
-        }
         
         if(datosBusqueda.size() == 1){
             
@@ -309,14 +301,6 @@ public class MenuAlbumController implements Initializable {
             alert.show();
         }
         
-        if(datosBusqueda.size() != opcionesBusqueda.size()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText("Error de Busqueda");
-            alert.setContentText("Los valores ingresados difieren de las opciones seleccionadas.");
-            alert.show();
-            
-        }
         
         if(datosBusqueda.size() == 1){
             
