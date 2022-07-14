@@ -259,7 +259,7 @@ public class MenuAlbumController implements Initializable {
         if(datosBusqueda.size() == 1){
             System.out.println("Busqueda simple");
             
-            ArrayList<Foto> resultadosBFotos = App.sys.buscaSimpleFoto(opcionesBusqueda.get(0), datosBusqueda.get(0), App.sys.getListaFotosSistema());
+            ArrayList<Foto> resultadosBFotos = App.sys.buscaSimpleFoto(opcionesBusqueda.getLast(), datosBusqueda.getLast(), App.sys.getListaFotosSistema());
             for(Foto f: resultadosBFotos){
                 System.out.println(f.getPhotoid());
             }
@@ -279,7 +279,7 @@ public class MenuAlbumController implements Initializable {
             }
             System.out.println("Busqueda compleja");
             ArrayList<Foto> resultadosFotos = new ArrayList<Foto>();
-            resultadosFotos = App.sys.buscaComplexFoto(opcionesBusqueda,datosBusqueda,App.sys.getListaFotosSistema());
+            resultadosFotos = App.sys.buscaComplexFoto(opbn,datosBusqueda,App.sys.getListaFotosSistema());
 
             double totalFotos = (double) resultadosFotos.size();
             int numRows = (int) Math.ceil(totalFotos/3);
