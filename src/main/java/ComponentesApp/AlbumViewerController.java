@@ -198,7 +198,7 @@ public class AlbumViewerController implements Initializable {
                     App.sys.modificaFoto(fotos.get(i), cambios, valores);
                     App.sys.escribeFoto(fotos.get(i), App.rutaFoto);
                     App.sys.eliminaAlbum(album, App.rutaAlbum, App.rutaAlbumfolder);
-
+                    App.sys.reload();
                     
                 }
                 }

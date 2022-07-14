@@ -144,23 +144,20 @@ public class ArrayList<E> implements List<E>, Iterable<E>{
             return false;
         }
         
-        arreglo[tam--] = null;
+        arreglo[tam-1] = null;
+        tam -- ;
         return true;
     }
 
+
     @Override
     public boolean removeFirst() {
-        if(isEmpty()){
-            return false;
-        }
-        //remover primer elemento
+        if (isEmpty()) return false;
         arreglo[0] = null;
-        //recorrer los elementos
-        for(int i=0;i<tam-1;i++){
+        for(int i=0; i<tam-1;i++){
             arreglo[i] = arreglo[i+1];
         }
-        //quitar el ultimo elemento y reducir el tamanio
-        arreglo[tam--] = null;
+        removeLast();
         return true;
     }
 
@@ -226,7 +223,6 @@ public class ArrayList<E> implements List<E>, Iterable<E>{
 
     @Override
     public boolean remove(int index) {
-      
         if (index > tam -1) throw new IndexOutOfBoundsException("El indice pedido supera la capacidad del arreglo");
         if(index==0) return removeFirst();
         if(index == tam -1) return removeLast();
@@ -237,7 +233,6 @@ public class ArrayList<E> implements List<E>, Iterable<E>{
             }
             return removeLast();
         }
-
     }
     
 }

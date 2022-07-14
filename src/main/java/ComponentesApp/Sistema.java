@@ -251,6 +251,7 @@ public class Sistema {
         ArrayList<Foto> listaRetorno = new ArrayList<Foto>();
         //se puede buscar por fecha,por personas que salgan en la foto, y por lugar.
         if(parametro.equals("place")){
+            System.out.println("Busqueda por lugar");
             for(Foto f: listaFotos){
                valor = valor.replace("\"", "");
             if(valor.equals(f.getPlace().replace("\"", ""))){
@@ -261,7 +262,7 @@ public class Sistema {
             return listaRetorno;
         }
         if(parametro.equals("people")){
-            
+            System.out.println("Busqueda por persona");
             String[] datospeople = valor.split("#"); //formato de envio "p1#p2#p3"
             int confirmaciones_ne = datospeople.length; //obtener la cantidad de confirmaciones necesarias para confirmar que la foto vale
             int confirmaciones_act = 0;
@@ -272,7 +273,7 @@ public class Sistema {
                      for(Persona p: listaPersonas){
                          String p_finder = p.getName();
                          p_finder = p_finder.replace("\"", "");
-                         if(p_finder.equals(datospeople[i])){
+                         if(p_finder.equals(datospeople[i].replace("\"", ""))){
                              
                              per = p;
                          }
@@ -388,6 +389,7 @@ public class Sistema {
             
             //tendriamos que buscar los albumid a los que pertenece cada foto
             for(Album a: listaAlbumes){
+                System.out.println("Albumes encontrados " + a.getId());
                     for(Foto f: result){
                     ArrayList<String> albumid = f.getAlbum();
                     for(String aid: albumid){
@@ -410,24 +412,28 @@ public class Sistema {
         }
     
     public ArrayList<Foto> buscaComplexFoto(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Foto> listaFotos){
-        ArrayList<Foto> listaRetorno = new ArrayList<Foto>();
         
+        
+        ArrayList<Foto> listaRetorno = new ArrayList<Foto>();
+        ArrayList<String> parametros = parametro;
+        ArrayList<String> valores = valor;
         //Obtener primer parametro y hacer busqueda inicial
-        listaRetorno = buscaSimpleFoto(parametro.get(0),valor.get(0),listaFotosSistema);
-        parametro.remove(0);
-        valor.remove(0);
-        int tamparametrosinit = parametro.size(); //numero de veces a seguir haciendo el filtrado
+        listaRetorno = buscaSimpleFoto(parametros.get(0),valores.get(0),listaFotosSistema);
+        parametros.remove(0);
+        valores.remove(0);
+        int tamparametrosinit = parametros.size(); //numero de veces a seguir haciendo el filtrado
+        System.out.println(tamparametrosinit);
         if(tamparametrosinit>0){
-        for(int i=0; i<tamparametrosinit-1;i++){ //-1 a cambiar por + 0 en el caso de fallo. Itera la cantidad de veces que
-            //Agregar todas las fotos localizadas en la primera busqueda a un arrayList
-            ArrayList<Foto> nuevaLista = new ArrayList<Foto>();
-            for(Foto f: listaRetorno){
-                nuevaLista.addLast(f);
-                }
-            listaRetorno = buscaSimpleFoto(parametro.get(0),valor.get(0),nuevaLista); //volver a realizar la busqueda pero con la lista ya filtrada
-            parametro.remove(0); //sacar el parametro y valor ya procesado
-            valor.remove(0);
-        }
+            for(int i=0; i<tamparametrosinit;i++){ //-1 a cambiar por + 0 en el caso de fallo. Itera la cantidad de veces que
+                //Agregar todas las fotos localizadas en la primera busqueda a un arrayList
+                ArrayList<Foto> nuevaLista = new ArrayList<Foto>();
+                for(Foto f: listaRetorno){
+                    nuevaLista.addLast(f);
+                    }
+                listaRetorno = buscaSimpleFoto(parametros.get(0),valores.get(0),nuevaLista); //volver a realizar la busqueda pero con la lista ya filtrada
+                parametros.remove(0); //sacar el parametro y valor ya procesado
+                valores.remove(0);
+            }
         
         }
         return listaRetorno;
@@ -436,31 +442,33 @@ public class Sistema {
         
     }
     
-    public ArrayList<String> buscaComplexAlbum(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Album> listaAlbumes){
+    public ArrayList<String> buscaComplexAlbum(ArrayList<String> parametro, ArrayList<String> valor, ArrayList<Album> listaAlbumesS){
         ArrayList<String> listaRetorno = new ArrayList<String>();
         ArrayList<Foto> result = null;
         result = buscaComplexFoto(parametro,valor,listaFotosSistema);
         
-        for(Album a: listaAlbumes){
-                    for(Foto f: result){
-                    ArrayList<String> albumid = f.getAlbum();
-                    for(String aid: albumid){
-                        if(aid.equals(a.getId()) && !(listaRetorno.contains(a.getId()))){
-                            listaRetorno.addLast(a.getId());
-                           
+        for(Foto f:result){
+            for(String albumbuscador:f.getAlbum()){
+                for(Album a: listaAlbumes){
+                            String aid = a.getId().replace("\"", "");
+                            if(aid.equals(albumbuscador.replace("\"", "")) && !(listaRetorno.contains(aid))){
+                                System.out.println("Retorno " + aid);
+                                listaRetorno.addLast(aid);
                             }
-                        }   
-                    }
-              
-                    
+                        }
+
                 }
+        }
+
+            
+        
           
             return listaRetorno;
             
-        
-        
-        
     }
+        
+        
+    
 
     //Construye Camaras
     public ArrayList<Camara> construyeCamaras(String ruta){

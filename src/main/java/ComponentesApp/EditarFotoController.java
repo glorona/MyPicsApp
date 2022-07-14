@@ -227,7 +227,7 @@ public class EditarFotoController implements Initializable {
         App.sys.modificaFoto(photo, cambios, valores);
         App.sys.eliminaLineaFoto(photo, App.rutaFoto, App.rutaFotofolder);
         App.sys.escribeFoto(photo, App.rutaFoto);
-        
+        App.sys.reload();
         regresar();
     }
     

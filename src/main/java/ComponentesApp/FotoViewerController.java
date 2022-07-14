@@ -199,7 +199,7 @@ public class FotoViewerController implements Initializable {
                     imagen.delete();
                     
                     
-                    
+                    App.sys.reload();
                     FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MenuAlbum.fxml"));
                     Parent root = fxmlLoader.load();
                     App.scene.setRoot(root);            

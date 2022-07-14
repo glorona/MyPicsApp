@@ -152,7 +152,7 @@ public class MenuOpcionesController implements Initializable {
         if(!confirmaFotoex){
         App.sys.getListaPersonas().remove(App.sys.getListaPersonas().indexOf(person));
         App.sys.eliminaPersona(person, App.rutaPersona, App.rutaPersonasfolder);
-      
+        App.sys.reload();
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -282,7 +282,7 @@ public class MenuOpcionesController implements Initializable {
         if(!confirmaFotoex){
         App.sys.getListaCamaras().remove(App.sys.getListaCamaras().indexOf(cam));
         App.sys.eliminaCamara(cam, App.rutaCamara, App.rutaCamarafolder);
-        
+        App.sys.reload();
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);

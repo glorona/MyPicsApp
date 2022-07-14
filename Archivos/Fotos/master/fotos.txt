@@ -1,4 +1,5 @@
-"f7"#"aaa"#"Casa"#"Archivos\Fotos\archivosfotos\f6.jpg"#"a0"#"p3"#"aaa"#22.04.2022#"c5"
-"f5"#"Kyro me mira"#"Casa"#"Archivos\Fotos\archivosfotos\f5.JPG"#"a0","a1","a3"#"p4"#"Kyro mira"#11.06.2022#c4
-"f8"#"Kyro de espaldas"#"Casa"#"Archivos\Fotos\archivosfotos\f8.JPG"#"a0","a1","a3"#"p4"#"Kyro"#22.06.2021#c5
-"f10"#"Yo en NY"#"Nueva York"#"Archivos\Fotos\archivosfotos\f10.JPG"#"a0"#"p3"#"NY"#11.06.2021#c8
+"f7"#"aaa"#"Casa"#"Archivos\Fotos\archivosfotos\f6.jpg"#"a0"#"p3"#"Casa"#22.04.2022#"c5"
+"f12"#"Kyro dormido"#"Casa"#"Archivos\Fotos\archivosfotos\f12.JPG"#"a0"#"p3","p4"#"Kyro dormido"#12.03.2022#c4
+"f5"#"Kyro me mira"#"Casa"#"Archivos\Fotos\archivosfotos\f5.JPG"#"a0"#"p4"#"Kyro mira"#11.06.2022#c4
+"f8"#"Kyro de espaldas"#"Casa"#"Archivos\Fotos\archivosfotos\f8.JPG"#"a0","a1"#"p4"#"Kyro"#22.06.2021#c5
+"f10"#"Yo en NY"#"Nueva York"#"Archivos\Fotos\archivosfotos\f10.JPG"#"a0","a2"#"p3"#"NY"#11.06.2021#c8
