@@ -86,7 +86,7 @@ public class MenuAlbumController implements Initializable {
         chkBuscaAlbum.getItems().setAll(cambios);
         
         chkBoxBusqueda.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
-            for(int i=0; i<cambio.size()-1; i++){
+            for(int i=0; i<cambio.size(); i++){
                 if(chkBoxBusqueda.getCheckModel().isChecked(i) && !(opcionesBusqueda.contains(cambio.get(i)))){
 
                     
@@ -100,7 +100,7 @@ public class MenuAlbumController implements Initializable {
         
         
         chkBuscaAlbum.getCheckModel().getCheckedItems().addListener((ListChangeListener.Change<? extends String> c) -> {
-            for(int i=0; i<cambio.size()-1; i++){
+            for(int i=0; i<cambio.size(); i++){
                 if(chkBuscaAlbum.getCheckModel().isChecked(i) && !(opcionesBusqueda.contains(cambio.get(i)))){
                     
                     opcionesBusqueda.addLast(cambio.get(i));

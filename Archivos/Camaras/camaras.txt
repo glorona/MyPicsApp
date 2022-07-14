@@ -6,3 +6,4 @@
 "c8"#"P10"#"Olympus"
 "c9"#"P100"#"Olympus"
 "c12"#"P200"#"Olympus"
+"c13"#"P105"#"Canon"

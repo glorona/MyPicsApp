@@ -1,3 +1,4 @@
 "a0"#"Album de fotos comun"#"Album donde se encuentran todas las fotos insertadas."
 "a1"#"Casa"#"Album Casa"
 "a2"#"Gabriel"#"a"
+"a3"#"Kyro"#"Fotos de Kyro"

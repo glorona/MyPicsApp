@@ -321,10 +321,11 @@ public class Sistema {
         
         //POR HACER: BUSCAR POR CAMARA (MARCA O MODELO)
         if(parametro.equals("camara")){
+            System.out.println("busca camara ");
             Camara cfound = null;
             for(Camara c:listaCamaras){
                     String c_busca = c.getModelo().replace("\"", "");
-                    if(c_busca.equals(valor)){
+                    if(c_busca.equals(valor.replace("\"",""))){
                         cfound = c;
                     }
                     
