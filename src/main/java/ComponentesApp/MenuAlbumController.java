@@ -320,7 +320,13 @@ public class MenuAlbumController implements Initializable {
         if(datosBusqueda.size() == 1){
 
             ArrayList<String> resultadosBAlbum = App.sys.buscaSimpleAlbum(opcionesBusqueda.getLast(), datosBusqueda.getLast(), App.sys.getListaAlbumes());
+            ArrayList<Foto> resultadosBFoto = App.sys.buscaSimpleFoto(opcionesBusqueda.getLast(), datosBusqueda.getLast(), App.sys.getListaFotosSistema());
             
+            CircularDoubleLinkedList<Foto> resultadosBFotoCircular = new CircularDoubleLinkedList<>();
+            
+            for(Foto f: resultadosBFoto){
+                resultadosBFotoCircular.addLast(f);
+            }
             
             ArrayList<Album> listaRes = new ArrayList<Album>();
             for(Album a: App.sys.getListaAlbumes()){
@@ -345,19 +351,46 @@ public class MenuAlbumController implements Initializable {
             }
             
             
+            
+            App.sys.albumTemp = new Album("atemp", "Resultados de Búsqueda", "Resultados de la búsqueda realizada", resultadosBFotoCircular);
+            listaResFiltro.addLast(App.sys.albumTemp);
+            
+            for(Album asd: listaResFiltro){
+                System.out.println(asd.getId());
+            }
+            
             buttonsAlbum.getChildren().clear();
-
             agregarBotones(listaResFiltro);
         }
+        
         if(datosBusqueda.size() > 1){
             ArrayList<String> opbn = new ArrayList<String>();
             ArrayList<String> resultadosBAlbum = new ArrayList<String>();
+            
             for(int i=opcionesBusqueda.size()-valuebusqueda;i<opcionesBusqueda.size();i++){
                 opbn.addLast(opcionesBusqueda.get(i));
-               
             }
+            
+            ArrayList<String> opbnc = new ArrayList<>();
+            ArrayList<String> datosBusquedac = datosBusqueda;
+            
+            for(int i=0; i<opbn.size();i++){
+                opbnc.addLast(opbn.get(i));
+                datosBusquedac.addLast(datosBusqueda.get(i));
+            }
+            
             resultadosBAlbum = App.sys.buscaComplexAlbum(opbn, datosBusqueda, App.sys.getListaAlbumes());
             
+            ArrayList<Foto> resultadosBFoto = App.sys.buscaComplexFoto(opbnc, datosBusquedac, App.sys.getListaFotosSistema());
+            
+            
+            
+            CircularDoubleLinkedList<Foto> resultadosBFotoCircular = new CircularDoubleLinkedList<>();
+            
+            for(Foto f: resultadosBFoto){
+                resultadosBFotoCircular.addLast(f);
+            }
+                        
             ArrayList<Album> listaRes = new ArrayList<Album>();
             for(Album a: App.sys.getListaAlbumes()){
                 String aid = a.getId();
@@ -368,9 +401,7 @@ public class MenuAlbumController implements Initializable {
                     if(idnew.equals(aid)){
                         listaRes.addLast(a);
                     }
-                
                 }
-                
             }
             
             ArrayList<Album> listaResFiltro = new ArrayList<Album>();
@@ -381,8 +412,13 @@ public class MenuAlbumController implements Initializable {
             }
             
             
+            App.sys.albumTemp = new Album("atemp", "Resultados de Búsqueda", "Resultados de la búsqueda realizada", resultadosBFotoCircular);
+            listaResFiltro.addLast(App.sys.albumTemp);
             
-            
+            for(Album asd: listaResFiltro){
+                System.out.println(asd.getId());
+            }
+                        
             buttonsAlbum.getChildren().clear();
             
             agregarBotones(listaResFiltro);

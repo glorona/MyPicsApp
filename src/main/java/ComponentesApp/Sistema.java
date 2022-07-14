@@ -40,6 +40,7 @@ public class Sistema {
     private ArrayList<Persona> listaPersonas;
     private ArrayList<Foto> listaFotosSistema;
     private ArrayList<Camara> listaCamaras;
+    public Album albumTemp;
     
     public Sistema(){
         this.listaAlbumes = construyeAlbumes(App.rutaAlbum);
